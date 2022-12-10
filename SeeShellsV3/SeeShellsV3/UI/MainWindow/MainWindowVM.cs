@@ -20,8 +20,8 @@ namespace SeeShellsV3.UI
         [Dependency] public IShellEventManager ShellEventManager { get; set; }
         [Dependency] public ISelected Selected { get; set; }
 
-        public string WebsiteUrl => @"https://rickleinecker.github.io/SeeShellsV3";
-        public string GithubUrl => @"https://github.com/RickLeinecker/SeeShellsV3";
+        public string WebsiteUrl => @"https://rickleinecker.github.io/SeeShells-V3";
+        public string GithubUrl => @"https://github.com/RickLeinecker/SeeShells-V3";
 
         public Visibility StatusVisibility => Status != string.Empty ? Visibility.Visible : Visibility.Collapsed;
         public string Status { get => _status; private set { _status = value; NotifyPropertyChanged(nameof(Status)); NotifyPropertyChanged(nameof(StatusVisibility)); } }
