@@ -43,6 +43,14 @@ See the [Help Section](https://rickleinecker.github.io/SeeShells/help) for modif
  - Josh Rueda [@SecurityNoodle](https://github.com/SecurityNoodle)
  - Devon Gadarowski [@devon-gadarowski ](https://github.com/devon-gadarowski)
  - Kaylee Hoyt [@hoytk6](https://github.com/hoytk6)
+ 
+### v3 Developers
+ - Alisa Alarcon-Cometta [@taylora-c](https://github.com/taylora-c)
+ - Alex Desmond [@sunmethods](https://github.com/sunmethods)
+ - Nathan Kofoed [@Nexus0622](https://github.com/Nexus0622)
+ - Wesley Newcomb [@wesnewcomb](https://github.com/wesnewcomb)
+ - Jake Norris [@jakenorris1124](https://github.com/jakenorris1124)
 
 ### Sponsor
-- Richard Leinecker [@RickLeinecker](https://github.com/RickLeinecker)
+- (V1 and V2) Richard Leinecker [@RickLeinecker](https://github.com/RickLeinecker)
+- (V3) Edward Amoruso
