@@ -1,5 +1,5 @@
 # SeeShells: Windows Shellbag Timeline Display & Parser
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/ShellBags/v2?include_prereleases)](https://github.com/RickLeinecker/SeeShellsv2/releases/latest/download/SeeShellsV2.zip)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/ShellBags/v2?include_prereleases)](https://github.com/RickLeinecker/SeeShellsV3/releases/latest/download/SeeShellsV3.zip)
 [![GitHub All Releases](https://img.shields.io/github/downloads/ShellBags/v2/total)](https://github.com/ShellBags/v2/releases)
 [![SeeShells License](https://img.shields.io/github/license/RickLeinecker/SeeShells)](https://github.com/RickLeinecker/SeeShells/blob/master/LICENSE)
 
@@ -43,6 +43,14 @@ See the [Help Section](https://rickleinecker.github.io/SeeShells/help) for modif
  - Josh Rueda [@SecurityNoodle](https://github.com/SecurityNoodle)
  - Devon Gadarowski [@devon-gadarowski ](https://github.com/devon-gadarowski)
  - Kaylee Hoyt [@hoytk6](https://github.com/hoytk6)
+ 
+### v3 Developers
+ - Alisa Alarcon-Cometta [@taylora-c](https://github.com/taylora-c)
+ - Alex Desmond [@sunmethods](https://github.com/sunmethods)
+ - Nathan Kofoed [@Nexus0622](https://github.com/Nexus0622)
+ - Wesley Newcomb [@wesnewcomb](https://github.com/wesnewcomb)
+ - Jake Norris [@jakenorris1124](https://github.com/jakenorris1124)
 
 ### Sponsor
-- Richard Leinecker [@RickLeinecker](https://github.com/RickLeinecker)
+- (V1 and V2) Richard Leinecker [@RickLeinecker](https://github.com/RickLeinecker)
+- (V3) Edward Amoruso
