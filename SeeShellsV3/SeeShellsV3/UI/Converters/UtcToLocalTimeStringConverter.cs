@@ -36,7 +36,25 @@ namespace SeeShellsV3.UI
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            if (value is DateTime d)
+            {
+                string s = parameter as string;
+                switch (s)
+                {
+                    case "ShortDate":
+                        return d.ToUniversalTime().ToShortDateString();
+                    case "ShortTime":
+                        return d.ToUniversalTime().ToShortTimeString();
+                    case "LongDate":
+                        return d.ToUniversalTime().ToLongDateString();
+                    case "LongTime":
+                        return d.ToUniversalTime().ToLongTimeString();
+                    default:
+                        return d.ToUniversalTime().ToString();
+                }
+            }
+
+            return value;
         }
     }
 }
