@@ -21,7 +21,7 @@ namespace SeeShellsV3.Data
             .Replace("{TYPENAME}", TypeName)
             .Replace("{USER}", User.Name)
             .Replace("{PLACE}", "\"" + Place.Name + "\" (" + Place.Type + ")")
-            .Replace("{TIMESTAMP}", TimeStamp.ToString());
+            .Replace("{TIMESTAMP}", TimeStamp.ToLocalTime().ToString());
 
         /// <summary>
         /// A pattern for creating a LongDescription. Use {USER}, {PLACE}, {TYPENAME}, and {TIMESTAMP} to insert field strings into
