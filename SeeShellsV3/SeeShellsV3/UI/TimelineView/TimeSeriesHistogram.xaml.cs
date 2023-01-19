@@ -183,6 +183,7 @@ namespace SeeShellsV3.UI
             _histPlotModel.LegendTextColor = OxyColor.FromArgb(TextColor.A, TextColor.R, TextColor.G, TextColor.B);
             _histPlotModel.LegendTitleColor = OxyColor.FromArgb(TextColor.A, TextColor.R, TextColor.G, TextColor.B);
             _histPlotModel.LegendPosition = LegendPosition.LeftMiddle;
+            _histPlotModel.LegendSymbolLength = 15.0;
             _histPlotModel.PlotAreaBorderColor = OxyColor.FromArgb(PlotAreaBorderColor.A, PlotAreaBorderColor.R, PlotAreaBorderColor.G, PlotAreaBorderColor.B);
 
             _dateAxis.TextColor = OxyColor.FromArgb(TextColor.A, TextColor.R, TextColor.G, TextColor.B);
