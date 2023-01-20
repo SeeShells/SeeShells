@@ -13,6 +13,7 @@
         <local:CamelCaseConverter x:Key="CamelCaseConverter"/>
         <local:UpperCaseConverter x:Key="UpperCaseConverter"/>
         <local:SelectedItemConverter x:Key="SelectedItemConverter"/>
+        <converters:FileSizeConverter x:Key="FileSizeConverter"/>
         <converters:ByteArrayConverter x:Key="ByteArrayConverter"/>
 
         <!-- User -->
