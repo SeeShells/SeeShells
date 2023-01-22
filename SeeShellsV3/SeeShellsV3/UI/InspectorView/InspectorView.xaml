@@ -13,6 +13,7 @@
         <local:CamelCaseConverter x:Key="CamelCaseConverter"/>
         <local:UpperCaseConverter x:Key="UpperCaseConverter"/>
         <local:SelectedItemConverter x:Key="SelectedItemConverter"/>
+        <converters:FieldConverterWrapper x:Key="FieldConverterWrapper"/>
         <converters:FileSizeConverter x:Key="FileSizeConverter"/>
         <converters:ByteArrayConverter x:Key="ByteArrayConverter"/>
 
@@ -327,7 +328,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock TextWrapping="Wrap" FontWeight="Bold" Text="{Binding Key, Converter={StaticResource CamelCaseConverter}}" Grid.Column="0" HorizontalAlignment="Right"/>
-                                <TextBlock TextWrapping="Wrap" Text="{Binding Value, Converter={StaticResource ByteArrayConverter}}" Grid.Column="1" Margin="6 0 0 0"/>
+                                <TextBlock TextWrapping="Wrap" Text="{Binding Value, Converter={StaticResource FieldConverterWrapper}}" Grid.Column="1" Margin="6 0 0 0"/>
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
