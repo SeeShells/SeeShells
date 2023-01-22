@@ -15,7 +15,7 @@ namespace SeeShellsV3.UI.Converters
     public class FieldConverterWrapper: IValueConverter
     {
         /// <summary>
-        /// 
+        /// List of converters to be wrapped.
         /// </summary>
         private IValueConverter[] Converters = new IValueConverter[]
         {
