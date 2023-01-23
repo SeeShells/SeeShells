@@ -21,11 +21,6 @@
                     <MenuItem Header="As Report" Click="Export_Window_Click"/>
                 </MenuItem>
                 <MenuItem Header="Reset" Background="Transparent" Click="ResetMenuItem_Click"/>
-                <MenuItem Header="Timezone" Background="Transparent">
-                    <MenuItem Header="Timezone 1"/>
-                    <MenuItem Header="Timezone 2"/>
-                    <MenuItem Header="Timezone 3"/>
-                </MenuItem>
             </Menu>
         </mah:WindowCommands>
     </mah:MetroWindow.LeftWindowCommands>
@@ -45,6 +40,13 @@
                               HorizontalContentAlignment="Right"
                               ContentDirection="LeftToRight"
                               Margin="5 0"/>
+            <Menu Background="Transparent">
+                <MenuItem Header="Timezone" Background="Transparent">
+                    <MenuItem Header="Timezone 1"/>
+                    <MenuItem Header="Timezone 2"/>
+                    <MenuItem Header="Timezone 3"/>
+                </MenuItem>
+            </Menu>
         </mah:WindowCommands>
     </mah:MetroWindow.RightWindowCommands>
     <Grid>
