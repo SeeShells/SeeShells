@@ -51,6 +51,7 @@ namespace SeeShellsV3.UI
         private readonly PlotModel _histPlotModel = new PlotModel();
         private readonly DateTimeAxis _dateAxis = new DateTimeAxis { Position = AxisPosition.Bottom };
         private readonly LinearAxis _freqAxis = new LinearAxis { Position = AxisPosition.Left, IsZoomEnabled = false, IsPanEnabled = false };
+        private readonly PlotController _histPlotController = new OxyPlot.PlotController();
 
         private readonly ObservableCollection<object> _selected = new ObservableCollection<object>();
 
@@ -60,7 +61,8 @@ namespace SeeShellsV3.UI
 
             _histPlotModel.Axes.Add(_dateAxis);
             _histPlotModel.Axes.Add(_freqAxis);
-
+            _histPlotModel.LegendPlacement = LegendPlacement.Outside;
+            
             _histPlotModel.MouseDown += _histPlotModel_MouseDown;
             _histPlotModel.MouseMove += _histPlotModel_MouseMove;
 
@@ -76,7 +78,11 @@ namespace SeeShellsV3.UI
                 OxyColor.FromRgb(0x88, 0x22, 0x55)
             };
 
+            _histPlotController.UnbindMouseDown(OxyMouseButton.Right);
+            _histPlotController.BindMouseDown(OxyMouseButton.Left, PlotCommands.PanAt);
+
             HistogramPlot.Model = _histPlotModel;
+            HistogramPlot.Controller = _histPlotController;
 
             ResetHistSeries();
             UpdateAxes();
@@ -84,7 +90,7 @@ namespace SeeShellsV3.UI
 
         private void _histPlotModel_MouseMove(object sender, OxyMouseEventArgs e)
         {
-            if (Mouse.LeftButton == MouseButtonState.Pressed)
+            if (Mouse.RightButton == MouseButtonState.Pressed)
             {
                 var results = _histPlotModel.HitTest(new HitTestArguments(e.Position, 10));
 
@@ -114,7 +120,7 @@ namespace SeeShellsV3.UI
 
             if (_histPlotModel.LegendArea.Contains(e.Position))
             {
-                int index = (int)((e.Position.Y - _histPlotModel.LegendArea.Top - _histPlotModel.LegendPadding) / (_histPlotModel.LegendSymbolLength + 1));
+                int index = (int)((e.Position.Y - _histPlotModel.LegendArea.Top - _histPlotModel.LegendPadding) / (_histPlotModel.LegendSymbolLength));
 
                 try
                 {
@@ -188,7 +194,8 @@ namespace SeeShellsV3.UI
             _histPlotModel.IsLegendVisible = true;
             _histPlotModel.LegendTextColor = OxyColor.FromArgb(TextColor.A, TextColor.R, TextColor.G, TextColor.B);
             _histPlotModel.LegendTitleColor = OxyColor.FromArgb(TextColor.A, TextColor.R, TextColor.G, TextColor.B);
-            _histPlotModel.LegendPosition = LegendPosition.LeftTop;
+            _histPlotModel.LegendPosition = LegendPosition.LeftMiddle;
+            _histPlotModel.LegendSymbolLength = 15.0;
             _histPlotModel.PlotAreaBorderColor = OxyColor.FromArgb(PlotAreaBorderColor.A, PlotAreaBorderColor.R, PlotAreaBorderColor.G, PlotAreaBorderColor.B);
 
             _dateAxis.TextColor = OxyColor.FromArgb(TextColor.A, TextColor.R, TextColor.G, TextColor.B);
