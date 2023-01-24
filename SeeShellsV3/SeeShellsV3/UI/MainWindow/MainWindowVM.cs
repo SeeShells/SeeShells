@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Security.Principal;
 using System.Threading;
@@ -28,12 +29,14 @@ namespace SeeShellsV3.UI
         public string Status { get => _status; private set { _status = value; NotifyPropertyChanged(nameof(Status)); NotifyPropertyChanged(nameof(StatusVisibility)); } }
         private string _status = string.Empty;
 
-        public IReadOnlyDictionary<string, string> Timezones { get => _timezones; }
+        public IReadOnlyDictionary<string, string> Timezones => _timezones;
         private Dictionary<string, string> _timezones = new()
         {
             {"Eastern Standard Time", "EST"},
             {"Universal Coordinated Time", "UTC"}
         };
+
+        public KeyValuePair<string, string> CurrentTimezone { get; set; } = new KeyValuePair<string, string>("Universal Coordinated Time", "UTC");
 
         public void RestartApplication(bool runAsAdmin = false)
         {
@@ -97,6 +100,16 @@ namespace SeeShellsV3.UI
 
             await Task.Run(() => Thread.Sleep(3000));
             Status = string.Empty;
+        }
+
+        public void ChangeTimezone(string timezone)
+        {
+            string code;
+            Timezones.TryGetValue(timezone, out code);
+
+            CurrentTimezone = new KeyValuePair<string, string>(timezone, code);
+
+            NotifyPropertyChanged(nameof(CurrentTimezone));
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using Microsoft.Win32;
 
 using MahApps.Metro.Controls;
@@ -21,6 +22,7 @@ namespace SeeShellsV3.UI
         //void ExportToCSV(string path);
         bool ImportFromRegistry(string hiveLocation = null);
         void RestartApplication(bool runAsAdmin = false);
+        void ChangeTimezone(string timezone);
         string WebsiteUrl { get; }
         string GithubUrl { get; }
 
@@ -28,6 +30,7 @@ namespace SeeShellsV3.UI
         string Status { get; }
 
         IReadOnlyDictionary<string, string> Timezones { get; }
+        KeyValuePair<string, string> CurrentTimezone { get; set; }
     }
 
     /// <summary>
@@ -107,6 +110,12 @@ namespace SeeShellsV3.UI
                 (Application.Current as App).ChangeTheme(new Uri(@"UI/Themes/DarkTheme.xaml", UriKind.Relative));
             else
                 (Application.Current as App).ChangeTheme(new Uri(@"UI/Themes/LightTheme.xaml", UriKind.Relative));
+        }
+
+        private void ChangeTimezone_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.ChangeTimezone((sender as MenuItem).Header as string);
+            
         }
     }
 }
