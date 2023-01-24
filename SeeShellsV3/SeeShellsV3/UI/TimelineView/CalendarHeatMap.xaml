@@ -61,11 +61,11 @@
                     <oxy:LinearColorAxis Key="z" Name="ColorAxis"
                                          AxisDistance="10" Position="Right"
                                          TicklineColor="Transparent"
-                                         LowColor="#00FFAE63" HighColor="#D61818"
+                                         LowColor="#0063AEFF" HighColor="#0000FF"
                                          PaletteSize="100" Minimum="0">
-                        <GradientStop Color="#00FFAE63" Offset="0" />
-                        <GradientStop Color="#FFAE63" Offset="0.1" />
-                        <GradientStop Color="#D61818" Offset="1.0" />
+                        <GradientStop Color="#0063AEFF" Offset="0" />
+                        <GradientStop Color="#63AEFF" Offset="0.1" />
+                        <GradientStop Color="#0000FF" Offset="1.0" />
                     </oxy:LinearColorAxis>
                     <oxy:LinearAxis Name="WeekAxis" IsAxisVisible="False"
                                     IsZoomEnabled="False" IsPanEnabled="False"/>
