@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:SeeShellsV3.UI"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        xmlns:xcad="https://github.com/Dirkster99/AvalonDock"
-        mc:Ignorable="d"
+        xmlns:xcad="https://github.com/Dirkster99/AvalonDock" d:DataContext="{d:DesignInstance Type=local:MainWindowVM}"
+                 mc:Ignorable="d"
         Title="SeeShells" Icon="../Images/SeeShells.png"
         Height="800" Width="1400">
     <mah:MetroWindow.LeftWindowCommands>
@@ -40,11 +40,13 @@
                               HorizontalContentAlignment="Right"
                               ContentDirection="LeftToRight"
                               Margin="5 0"/>
-            <Menu Background="Transparent">
-                <MenuItem Header="Timezone" Background="Transparent">
-                    <MenuItem Header="Timezone 1"/>
-                    <MenuItem Header="Timezone 2"/>
-                    <MenuItem Header="Timezone 3"/>
+            <Menu Background="Transparent" ItemsSource="">
+                <MenuItem Header="Timezones" Background="Transparent" ItemsSource="{Binding Timezones}">
+                    <MenuItem.ItemTemplate>
+                        <DataTemplate>
+                            <MenuItem Header="{Binding Key}" Background="Transparent"/>
+                        </DataTemplate>
+                    </MenuItem.ItemTemplate>
                 </MenuItem>
             </Menu>
         </mah:WindowCommands>

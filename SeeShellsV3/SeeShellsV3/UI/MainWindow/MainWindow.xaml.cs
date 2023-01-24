@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -24,6 +26,8 @@ namespace SeeShellsV3.UI
 
         Visibility StatusVisibility { get; }
         string Status { get; }
+
+        IReadOnlyDictionary<string, string> Timezones { get; }
     }
 
     /// <summary>

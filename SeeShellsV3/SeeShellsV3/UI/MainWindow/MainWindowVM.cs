@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Security.Principal;
 using System.Threading;
@@ -26,6 +27,13 @@ namespace SeeShellsV3.UI
         public Visibility StatusVisibility => Status != string.Empty ? Visibility.Visible : Visibility.Collapsed;
         public string Status { get => _status; private set { _status = value; NotifyPropertyChanged(nameof(Status)); NotifyPropertyChanged(nameof(StatusVisibility)); } }
         private string _status = string.Empty;
+
+        public IReadOnlyDictionary<string, string> Timezones { get => _timezones; }
+        private Dictionary<string, string> _timezones = new()
+        {
+            {"Eastern Standard Time", "EST"},
+            {"Universal Coordinated Time", "UTC"}
+        };
 
         public void RestartApplication(bool runAsAdmin = false)
         {
