@@ -40,7 +40,7 @@
                               HorizontalContentAlignment="Right"
                               ContentDirection="LeftToRight"
                               Margin="5 0"/>
-            <Menu Background="Transparent" ItemsSource="">
+            <Menu Background="Transparent">
                 <MenuItem Header="Timezones" Background="Transparent" ItemsSource="{Binding Timezones}">
                     <MenuItem.ItemTemplate>
                         <DataTemplate>
