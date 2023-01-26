@@ -41,7 +41,7 @@
                               ContentDirection="LeftToRight"
                               Margin="5 0"/>
             <Menu Background="Transparent">
-                <MenuItem Header="{Binding CurrentTimezone.Value, Mode=OneWay}" Background="Transparent" ItemsSource="{Binding Timezones}">
+                <MenuItem Header="{Binding CurrentTimezone.Value, Mode=OneWay}" Background="Transparent" ItemsSource="{Binding Timezones}" Width="39">
                     <MenuItem.ItemTemplate>
                         <DataTemplate>
                             <MenuItem Header="{Binding Key}" Background="Transparent" Click="ChangeTimezone_Click"/>
