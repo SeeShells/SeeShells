@@ -325,7 +325,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock TextWrapping="Wrap" FontWeight="Bold" Text="{Binding Key, Converter={StaticResource CamelCaseConverter}}" Grid.Column="0" HorizontalAlignment="Right"/>
-                                <TextBlock TextWrapping="Wrap" Text="{Binding Value, Converter={StaticResource UtcToLocalTimeStringConverter}}" Grid.Column="1" Margin="6 0 0 0"/>
+                                <TextBlock TextWrapping="Wrap" Text="{Binding Value, Mode=OneWay}" Grid.Column="1" Margin="6 0 0 0"/>
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -364,7 +364,7 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock FontWeight="Bold" Text="Event Time" Grid.Column="0" HorizontalAlignment="Right"/>
-                    <TextBlock Text="{Binding TimeStamp, Converter={StaticResource UtcToLocalTimeStringConverter}}" Grid.Column="1" Margin="6 0 0 0"/>
+                    <TextBlock Text="{Binding TimeStamp, Mode=OneWay}" Grid.Column="1" Margin="6 0 0 0"/>
                 </Grid>
                 <Grid Margin="4">
                     <Grid.ColumnDefinitions>

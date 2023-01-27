@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 using Unity;
 
 using SeeShellsV3.Data;
+using SeeShellsV3.Events;
 using SeeShellsV3.Factories;
 using SeeShellsV3.Repositories;
+using SeeShellsV3.UI;
 
 namespace SeeShellsV3.Services
 {
@@ -28,6 +30,7 @@ namespace SeeShellsV3.Services
         {
             ShellEventFactory = shellEventFactory;
             ShellEvents = shellEvents;
+            MainWindowVM.TimezoneChanged += HandleTimezoneChangeEvent;
         }
 
         public IEnumerable<IShellEvent> GenerateEvents(IEnumerable<IShellItem> shellItems)
@@ -70,6 +73,14 @@ namespace SeeShellsV3.Services
 
             ShellEventGenerateEnd?.Invoke(this, EventArgs.Empty);
             return generatedEvents;
+        }
+
+        void HandleTimezoneChangeEvent(object sender, TimezoneChangeEventArgs e)
+        {
+            foreach (var currentShellEvent in ShellEvents)
+            {
+                currentShellEvent.TimeStamp = TimeZoneInfo.ConvertTime(currentShellEvent.TimeStamp, e.OldTimezone, e.NewTimezone);
+            }
         }
     }
 }

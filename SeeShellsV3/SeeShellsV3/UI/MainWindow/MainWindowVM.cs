@@ -13,6 +13,7 @@ using Unity;
 using SeeShellsV3.Data;
 using SeeShellsV3.Repositories;
 using SeeShellsV3.Services;
+using SeeShellsV3.Events;
 
 namespace SeeShellsV3.UI
 {
@@ -33,10 +34,12 @@ namespace SeeShellsV3.UI
         private Dictionary<string, string> _timezones = new()
         {
             {"Eastern Standard Time", "EST"},
-            {"Universal Coordinated Time", "UTC"}
+            {"Central Standard Time", "CST"},
+            {"Coordinated Universal Time", "UTC"}
         };
 
-        public KeyValuePair<string, string> CurrentTimezone { get; set; } = new KeyValuePair<string, string>("Universal Coordinated Time", "UTC");
+        public KeyValuePair<string, string> CurrentTimezone { get; set; } = new KeyValuePair<string, string>("Coordinated Universal Time", "UTC");
+        public static event EventHandler<TimezoneChangeEventArgs> TimezoneChanged;
 
         public void RestartApplication(bool runAsAdmin = false)
         {
@@ -102,14 +105,18 @@ namespace SeeShellsV3.UI
             Status = string.Empty;
         }
 
-        public void ChangeTimezone(string timezone)
+        public void ChangeTimezone(string newTimezone)
         {
-            string code;
-            Timezones.TryGetValue(timezone, out code);
+            string oldTimezone = CurrentTimezone.Key;
 
-            CurrentTimezone = new KeyValuePair<string, string>(timezone, code);
+            string code;
+            Timezones.TryGetValue(newTimezone, out code);
+
+            CurrentTimezone = new KeyValuePair<string, string>(newTimezone, code);
+            TimezoneChanged?.Invoke(this, new TimezoneChangeEventArgs(oldTimezone, newTimezone, code));
 
             NotifyPropertyChanged(nameof(CurrentTimezone));
+            NotifyPropertyChanged(nameof(ShellEvent.TimeStamp));
         }
     }
 }
