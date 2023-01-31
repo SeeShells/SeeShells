@@ -28,9 +28,6 @@ namespace SeeShellsV3.UI
 
         Visibility StatusVisibility { get; }
         string Status { get; }
-
-        IReadOnlyDictionary<string, string> Timezones { get; }
-        KeyValuePair<string, string> CurrentTimezone { get; set; }
     }
 
     /// <summary>
@@ -115,7 +112,6 @@ namespace SeeShellsV3.UI
         private void ChangeTimezone_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.ChangeTimezone((sender as MenuItem).Header as string);
-            
         }
     }
 }

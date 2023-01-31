@@ -39,13 +39,13 @@ namespace SeeShellsV3.Data
 
         public DateTime? SlotModifiedDate
         {
-            init => fields[nameof(SlotModifiedDate)] = value;
+            set => fields[nameof(SlotModifiedDate)] = value;
             get => fields.GetClassOrDefault<object>(nameof(SlotModifiedDate), null) as DateTime?;
         }
 
         public DateTime LastRegistryWriteDate
         {
-            init => fields[nameof(LastRegistryWriteDate)] = value;
+            set => fields[nameof(LastRegistryWriteDate)] = value;
             get => fields.GetStructOrDefault(nameof(LastRegistryWriteDate), DateTime.MinValue);
         }
 

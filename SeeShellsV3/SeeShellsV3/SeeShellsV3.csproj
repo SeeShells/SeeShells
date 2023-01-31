@@ -51,4 +51,9 @@
     <Resource Include="UI\Images\SeeShells.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Events\" />
+    <Folder Include="Services\TimezoneManager\" />
+  </ItemGroup>
+
 </Project>

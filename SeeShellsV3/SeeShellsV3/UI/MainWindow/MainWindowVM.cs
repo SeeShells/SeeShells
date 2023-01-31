@@ -11,6 +11,7 @@ using System.Windows;
 using Unity;
 
 using SeeShellsV3.Data;
+using SeeShellsV3.Events;
 using SeeShellsV3.Repositories;
 using SeeShellsV3.Services;
 
@@ -20,6 +21,7 @@ namespace SeeShellsV3.UI
     {
         [Dependency] public IRegistryImporter RegImporter { get; set; }
         [Dependency] public IShellEventManager ShellEventManager { get; set; }
+        [Dependency] public ITimezoneManager TimezoneManager { get; set; }
         [Dependency] public ISelected Selected { get; set; }
 
         public string WebsiteUrl => @"https://rickleinecker.github.io/SeeShells-V3";
@@ -28,15 +30,6 @@ namespace SeeShellsV3.UI
         public Visibility StatusVisibility => Status != string.Empty ? Visibility.Visible : Visibility.Collapsed;
         public string Status { get => _status; private set { _status = value; NotifyPropertyChanged(nameof(Status)); NotifyPropertyChanged(nameof(StatusVisibility)); } }
         private string _status = string.Empty;
-
-        public IReadOnlyDictionary<string, string> Timezones => _timezones;
-        private Dictionary<string, string> _timezones = new()
-        {
-            {"Eastern Standard Time", "EST"},
-            {"Universal Coordinated Time", "UTC"}
-        };
-
-        public KeyValuePair<string, string> CurrentTimezone { get; set; } = new KeyValuePair<string, string>("Universal Coordinated Time", "UTC");
 
         public void RestartApplication(bool runAsAdmin = false)
         {
@@ -104,12 +97,8 @@ namespace SeeShellsV3.UI
 
         public void ChangeTimezone(string timezone)
         {
-            string code;
-            Timezones.TryGetValue(timezone, out code);
-
-            CurrentTimezone = new KeyValuePair<string, string>(timezone, code);
-
-            NotifyPropertyChanged(nameof(CurrentTimezone));
+            TimezoneManager.Invoke(this, new TimezoneChangeEventArgs(timezone));
+            NotifyPropertyChanged(nameof(TimezoneManager));
         }
     }
 }
