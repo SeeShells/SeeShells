@@ -23,7 +23,6 @@ namespace SeeShellsV3.UI
     public interface IInspectorViewVM : IViewModel
     {
         ISelected Selected { get; }
-        void TimezoneChangeSubscriber();
     }
 
     /// <summary>
@@ -34,11 +33,7 @@ namespace SeeShellsV3.UI
         [Dependency]
         public IInspectorViewVM ViewModel
         {
-            set
-            {
-                DataContext = value;
-                ViewModel.TimezoneChangeSubscriber();
-            } 
+            set => DataContext = value;
             get => DataContext as IInspectorViewVM;
         }
 

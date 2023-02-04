@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using Microsoft.Win32;
 
 using MahApps.Metro.Controls;
+using SeeShellsV3.Events;
 using Unity;
 
 using SeeShellsV3.Factories;

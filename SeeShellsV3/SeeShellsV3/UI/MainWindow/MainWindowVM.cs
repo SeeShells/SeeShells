@@ -97,7 +97,8 @@ namespace SeeShellsV3.UI
 
         public void ChangeTimezone(string timezone)
         {
-            TimezoneManager.Invoke(this, new TimezoneChangeEventArgs(timezone));
+            Debug.WriteLine("ChangeTime");
+            TimezoneManager.TimezoneChangeHandler(timezone);
             NotifyPropertyChanged(nameof(TimezoneManager));
         }
     }

@@ -14,6 +14,7 @@ namespace SeeShellsV3.Data
         {
             Name = name;
             Identifier = identifier;
+
             Information = TimeZoneInfo.FindSystemTimeZoneById(name == "Coordinated Universal Time" ? "UTC" : name);
         }
 

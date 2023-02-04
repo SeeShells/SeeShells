@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Design;
+using System.Diagnostics;
+using System.Windows.Controls;
 using SeeShellsV3.Data;
 using SeeShellsV3.Events;
 using SeeShellsV3.Repositories;
+using SeeShellsV3.UI;
 using Unity;
 
 namespace SeeShellsV3.Services
@@ -12,7 +16,6 @@ namespace SeeShellsV3.Services
         public Timezone CurrentTimezone { get; set; } = new Timezone("Coordinated Universal Time", "UTC");
 
         public Collection<Timezone> SupportedTimezones { get; init; } = new Collection<Timezone>();
-        public event EventHandler<TimezoneChangeEventArgs> TimezoneChange;
 
         private IShellEventCollection ShellEvents { get; set; }
         private IShellItemCollection ShellItems { get; set; }
@@ -21,7 +24,7 @@ namespace SeeShellsV3.Services
         public TimezoneManager(
             [Dependency] IShellEventCollection shellEvents,
             [Dependency] IShellItemCollection shellItems
-            )
+        )
         {
             ShellItems = shellItems;
             ShellEvents = shellEvents;
@@ -30,50 +33,104 @@ namespace SeeShellsV3.Services
             SupportedTimezones.Add(new Timezone("Coordinated Universal Time", "UTC"));
             SupportedTimezones.Add(new Timezone("Eastern Standard Time", "EST"));
             SupportedTimezones.Add(new Timezone("Central Standard Time", "CST"));
-
-            TimezoneChange += TimezoneChangeHandler;
-        }
-
-        public void Invoke(object sender, TimezoneChangeEventArgs e)
-        {
-            TimezoneChange?.Invoke(sender, e);
+            SupportedTimezones.Add(new Timezone("Mountain Standard Time", "MST"));
+            SupportedTimezones.Add(new Timezone("Pacific Standard Time", "PST"));
         }
 
         /// <summary>
-        /// Handles the changing of timestamps throughout the application when <see cref="TimezoneChange"/> is invoked.
+        /// Handles the changing of timestamps throughout the application.
         /// </summary>
-        private void TimezoneChangeHandler(object sender, TimezoneChangeEventArgs e)
+        public void TimezoneChangeHandler(string timezone)
         {
             // Store the timezone that we are switching from for conversion purposes
             Timezone oldTimezone = CurrentTimezone;
             
             // Update CurrentTimezone to the new timezone
-            CurrentTimezone = GetTimezone(e.Name);
+            CurrentTimezone = GetTimezone(timezone);
+
+            if (oldTimezone.Equals(CurrentTimezone))
+            {
+                return;
+            }
 
             // Loop through all ShellItems and update their timestamps
             // TODO: Implement all types of timestamps that only certain ShellItems types have, such as ConnectedTimestamp
             foreach (var shellItem in ShellItems)
             {
-                // TODO: Fix this block of code
-                /*if (shellItem.SlotModifiedDate is not null)
+                shellItem.SlotModifiedDate = ConvertTimezone(shellItem.SlotModifiedDate, oldTimezone);
+                shellItem.LastRegistryWriteDate = ConvertTimezone(shellItem.LastRegistryWriteDate, oldTimezone);
+
+                if (shellItem is CompressedFolderShellItem intermediate)
                 {
-                    DateTime slotModifiedDateConverted = Convert.ToDateTime(shellItem.SlotModifiedDate);
-                    shellItem.SlotModifiedDate =
-                        TimeZoneInfo.ConvertTime(slotModifiedDateConverted, oldTimezone.Information, CurrentTimezone.Information);
-
-                    shellItem.SlotModifiedDate = slotModifiedDateConverted as DateTime?;
-                }*/
-
-                shellItem.LastRegistryWriteDate = TimeZoneInfo.ConvertTime(shellItem.LastRegistryWriteDate,
-                    oldTimezone.Information, CurrentTimezone.Information);
+                    intermediate.ModifiedDate = ConvertTimezone(intermediate.ModifiedDate, oldTimezone);
+                }
             }
 
             // Loop through all ShellEvents and update their timestamps
             foreach (var shellEvent in ShellEvents)
             {
-                shellEvent.TimeStamp = TimeZoneInfo.ConvertTime(shellEvent.TimeStamp, oldTimezone.Information,
-                    CurrentTimezone.Information);
+                shellEvent.TimeStamp = ConvertTimezone(shellEvent.TimeStamp, oldTimezone);
             }
+
+            ShellEvents.FilteredView.Refresh();
+        }
+
+        /// <summary>
+        /// Wrapper for the various ConvertTime functions to avoid errors when converting DateKind objects
+        /// with type Utc. Also allows nullable DateTimes to be converted.
+        /// </summary>
+        /// <param name="dateTime">DateTime object to be converted.</param>
+        /// <param name="oldTimezone">The timezone being switched from.</param>
+        /// <returns>A DateTime object representing the same time <see cref="input"/> does, in the timezone of <see cref="CurrentTimezone"/></returns>
+        private DateTime ConvertTimezone(DateTime dateTime, Timezone oldTimezone)
+        {
+            if (CurrentTimezone.Identifier == "UTC")
+            {
+                return TimeZoneInfo.ConvertTimeToUtc(dateTime, oldTimezone.Information);
+            }
+            if (dateTime.Kind == DateTimeKind.Utc)
+            {
+                return TimeZoneInfo.ConvertTimeFromUtc(dateTime, CurrentTimezone.Information);
+            }
+            if (dateTime.Kind == DateTimeKind.Unspecified)
+            {
+                return TimeZoneInfo.ConvertTime(dateTime, oldTimezone.Information, CurrentTimezone.Information);
+            }
+            if (dateTime.Kind == DateTimeKind.Local)
+            {
+                return TimeZoneInfo.ConvertTime(dateTime, TimeZoneInfo.Local, CurrentTimezone.Information);
+            }
+
+            throw new TimezoneNotSupportedException();
+        }
+
+        private DateTime? ConvertTimezone(DateTime? input, Timezone oldTimezone)
+        {
+            if (input is null)
+            {
+                return null;
+            }
+
+            DateTime dateTime = Convert.ToDateTime(input);
+
+            if (CurrentTimezone.Identifier == "UTC")
+            {
+                return TimeZoneInfo.ConvertTimeToUtc(dateTime, oldTimezone.Information);
+            }
+            if (dateTime.Kind == DateTimeKind.Utc)
+            {
+                return TimeZoneInfo.ConvertTimeFromUtc(dateTime, CurrentTimezone.Information);
+            }
+            if (dateTime.Kind == DateTimeKind.Unspecified)
+            {
+                return TimeZoneInfo.ConvertTime(dateTime, oldTimezone.Information, CurrentTimezone.Information);
+            }
+            if (dateTime.Kind == DateTimeKind.Local)
+            {
+                return TimeZoneInfo.ConvertTime(dateTime, TimeZoneInfo.Local, CurrentTimezone.Information);
+            }
+
+            throw new TimezoneNotSupportedException();
         }
 
         public Timezone GetTimezone(string input)

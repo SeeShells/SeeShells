@@ -17,10 +17,6 @@ namespace SeeShellsV3.UI
 
         public void TimezoneChangeSubscriber()
         {
-            TimezoneManager.TimezoneChange += (sender, e) =>
-            {
-                NotifyPropertyChanged(nameof(Selected));
-            };
         }
     }
 }

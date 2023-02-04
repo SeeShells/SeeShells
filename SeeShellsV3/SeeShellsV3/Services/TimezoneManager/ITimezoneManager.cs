@@ -20,16 +20,8 @@ namespace SeeShellsV3.Services
         /// </summary>
         public Collection<Timezone> SupportedTimezones { get; init; }
 
-        /// <summary>
-        /// An event that triggers when the timezone is updated.
-        /// </summary>
-        public event EventHandler<TimezoneChangeEventArgs> TimezoneChange;
-
-        /// <summary>
-        /// Invokes TimezoneChange to notify all subscribers that the Timezone has changed.
-        /// </summary>
-        public void Invoke(object sender, TimezoneChangeEventArgs e);
-
         public Timezone GetTimezone(string input);
+
+        public void TimezoneChangeHandler(string timezone);
     }
 }
