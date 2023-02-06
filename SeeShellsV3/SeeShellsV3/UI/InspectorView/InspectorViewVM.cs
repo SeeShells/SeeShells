@@ -13,10 +13,6 @@ namespace SeeShellsV3.UI
     public class InspectorViewVM : ViewModel, IInspectorViewVM
     {
         [Dependency] public ISelected Selected { get; set; }
-        [Dependency] public ITimezoneManager TimezoneManager { get; set; }
 
-        public void TimezoneChangeSubscriber()
-        {
-        }
     }
 }
