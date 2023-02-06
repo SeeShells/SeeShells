@@ -26,6 +26,8 @@ namespace SeeShellsV3.Factories
 
             // try to generate events for every type, in order of priority
             foreach (var generator in iGenerators)
+            {
+                System.Diagnostics.Debug.WriteLine(item.Place);
                 if (generator.CanGenerate(item))
                     shellEvents.AddRange(generator.Generate(item));
 
