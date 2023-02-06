@@ -54,15 +54,26 @@ namespace SeeShellsV3.Services
             }
 
             // Loop through all ShellItems and update their timestamps
-            // TODO: Implement all types of timestamps that only certain ShellItems types have, such as ConnectedTimestamp
             foreach (var shellItem in ShellItems)
             {
+                // Update timestamps that all ShellItems have
                 shellItem.SlotModifiedDate = ConvertTimezone(shellItem.SlotModifiedDate, oldTimezone);
                 shellItem.LastRegistryWriteDate = ConvertTimezone(shellItem.LastRegistryWriteDate, oldTimezone);
 
-                if (shellItem is CompressedFolderShellItem intermediate)
+                // Switch on ShellItem type to update timestamps that only specific types of ShellItems have
+                switch (shellItem)
                 {
-                    intermediate.ModifiedDate = ConvertTimezone(intermediate.ModifiedDate, oldTimezone);
+                    case CompressedFolderShellItem compressedFolderShellItem:
+                        compressedFolderShellItem.ModifiedDate = ConvertTimezone(compressedFolderShellItem.ModifiedDate, oldTimezone);
+                        break;
+                    case FileEntryShellItem fileEntryShellItem:
+                        fileEntryShellItem.ModifiedDate = ConvertTimezone(fileEntryShellItem.ModifiedDate, oldTimezone);
+                        fileEntryShellItem.AccessedDate = ConvertTimezone(fileEntryShellItem.AccessedDate, oldTimezone);
+                        fileEntryShellItem.CreationDate = ConvertTimezone(fileEntryShellItem.CreationDate, oldTimezone);
+                        break;
+                    case UriShellItem uriShellItem:
+                        uriShellItem.ConnectedDate = ConvertTimezone(uriShellItem.ConnectedDate, oldTimezone);
+                        break;
                 }
             }
 
@@ -72,6 +83,7 @@ namespace SeeShellsV3.Services
                 shellEvent.TimeStamp = ConvertTimezone(shellEvent.TimeStamp, oldTimezone);
             }
 
+            // Update ShellEvent collection so that the timeline gets updated
             ShellEvents.FilteredView.Refresh();
         }
 
