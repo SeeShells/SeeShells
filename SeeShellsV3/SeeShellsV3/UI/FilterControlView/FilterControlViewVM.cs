@@ -9,6 +9,7 @@ using SeeShellsV3.Data;
 using SeeShellsV3.Repositories;
 using System.Windows.Data;
 using System.Globalization;
+using System.ComponentModel;
 
 namespace SeeShellsV3.UI
 {
@@ -21,6 +22,10 @@ namespace SeeShellsV3.UI
         public IRegistryHiveCollection RegistryHiveCollection { get; set; }
 
         public IShellEventCollection ShellEvents { get; private set; }
+
+        public IShellItemCollection ShellItems { get; private set; }
+
+        public ISelected Selected { get; private set; }
 
         public User User
         {
@@ -68,8 +73,8 @@ namespace SeeShellsV3.UI
         }
 
         public string Keyword {
-            get => keyword; 
-            set 
+            get => keyword;
+            set
             {
                 string old = keyword;
                 keyword = value;
@@ -132,7 +137,7 @@ namespace SeeShellsV3.UI
         private string path = null;
         private string keyword = null;
 
-        public FilterControlViewVM([Dependency] IShellEventCollection shellEvents)
+        public FilterControlViewVM([Dependency] IShellEventCollection shellEvents, [Dependency] IShellItemCollection shellItems ,[Dependency] ISelected selected)
         {
             ShellEvents = shellEvents;
             ShellItems = shellItems;
