@@ -108,7 +108,10 @@ namespace SeeShellsV3.UI
                 begin = value;
 
                 if (old != begin)
+                {
                     ShellEvents.FilteredView.Refresh();
+                    ShellItems.FilteredView.Refresh();
+                }
 
                 NotifyPropertyChanged();
             }
@@ -123,7 +126,10 @@ namespace SeeShellsV3.UI
                 end = value;
 
                 if (old != end)
+                {
                     ShellEvents.FilteredView.Refresh();
+                    ShellItems.FilteredView.Refresh();
+                }
 
                 NotifyPropertyChanged();
             }
