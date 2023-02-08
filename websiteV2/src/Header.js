@@ -12,6 +12,7 @@ export default function Header(props)
 
     const HeaderBar = styled.div`
     display: flex;
+    position: sticky;
     width: 100vw;
     background: #2C313D;
     height: "10vh";
@@ -42,6 +43,9 @@ export default function Header(props)
         text-align: center;
         font-weight: bold;
         padding:5px;
+        &:hover {
+            cursor: pointer;
+        };
     `
 
     const HomeButton = styled.div`
@@ -52,6 +56,15 @@ export default function Header(props)
     `
 
     const navigation = useNavigate();
+
+    function downloadSeeShells()
+    {
+        const button = document.createElement('a')
+        button.href = "https://github.com/ShellBags/v2/releases/download/v2.0-beta.4/SeeShellsV2.zip"
+        button.setAttribute("download", "SeeShellsV2")
+        button.click()
+        button.remove()
+    }
 
 
     function about()
@@ -68,7 +81,7 @@ export default function Header(props)
                             <img src={logo} width={"50vw"} height={"50vh"}/>
                         </Logo>
                     </HomeButton>
-                    <Download>
+                    <Download onClick={downloadSeeShells}>
                         Download
                     </Download>
                 </div>

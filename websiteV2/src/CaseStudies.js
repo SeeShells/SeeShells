@@ -3,7 +3,8 @@ import Header from "./Header";
 import logo from "./seeshellsLogo-flipped.png";
 import { MainContent, Title, MainText, Contain } from "./customStyles";
 import Grid from '@mui/material/Grid';
-import { caseStudyInfo } from "./CaseStudiesArray";
+
+const caseStudies = require("./CaseStudiesArray.json");
 
 export default function CaseStudies() {
     const HeaderContent = styled.div`
@@ -84,52 +85,70 @@ export default function CaseStudies() {
                 </Title>
             </HeaderContent>
             <MainContent>
-                {caseStudyInfo.map((CaseType) => {
-                    return (
-                        <div> 
-                            <SectionHeader>
-                                {CaseType.type}
-                            </SectionHeader>
-                            <CaseStudyBox>
-                                <Grid container justifyContent={"center"} columns={2} spacing={40}>
-                                    {CaseType.cases.map((Case) => {
-                                        return (
-                                            <Grid item align="center" sm={"auto"} md={6} lg={"auto"} >
-                                                <CaseTitle>
-                                                    {Case.title}
-                                                </CaseTitle>
-                                                 <ImageDiv>
-                                                    {displayImageOrDefault(Case.vidLink)}
-                                                </ImageDiv>
-                                                <Caption>
-                                                    {Case.caption }
-                                                </Caption>
-                                                <Grid container justifyContent={"center"} columns={2} spacing={20}>
-                                                    <Grid item align="center" sm={"auto"} md={6} lg={"auto"} >
-                                                        <StudiesButtons>
-                                                            PDF
-                                                        </StudiesButtons>
-                                                    </Grid>
-                                                    <Grid item align="center" sm={"auto"} md={6} lg={"auto"} >
-                                                        <StudiesButtons>
-                                                            Reg File
-                                                        </StudiesButtons>
-                                                    </Grid>
-                                                </Grid>
-
+                <SectionHeader>
+                    Insider Threats
+                </SectionHeader>
+                <Grid container style={{justifyContent:"center"}} columns={14}>
+                {caseStudies.inside.map((Case) => {
+                        return(
+                            <Grid  item align="center" xs={7} xl={5}>
+                                <CaseTitle>
+                                    {Case.title}
+                                </CaseTitle>
+                                    <ImageDiv>
+                                    {displayImageOrDefault(Case.vidLink)}
+                                </ImageDiv>
+                                <Caption>
+                                    {Case.caption }
+                                </Caption>
+                                <div style={{display:"flex", flexDirection:"row", justifyContent:"center"}}>
+                                    <Grid item align="center" xs={7} sm={5} lg={3} >
+                                        <StudiesButtons>
+                                            PDF
+                                        </StudiesButtons>
                                     </Grid>
-                                    )}
-                                    )
-
-                                    }
-                                </Grid> 
-
-                            </CaseStudyBox>
-                            
-                        </div>
-                    )
-                })}
-                
+                                    <Grid item align="center" xs={7} sm={4} lg={3} >
+                                        <StudiesButtons>
+                                            Reg File
+                                        </StudiesButtons>
+                                    </Grid>
+                                </div>
+                            </Grid> 
+                        )
+                    })}
+                </Grid>
+                <SectionHeader>
+                    External Threats
+                </SectionHeader>
+                <Grid container style={{justifyContent:"center", marginBottom:"25px"}} columns={14}>
+                {caseStudies.outside.map((Case) => {
+                        return(
+                            <Grid  item align="center" xs={7} xl={5}>
+                                <CaseTitle>
+                                    {Case.title}
+                                </CaseTitle>
+                                    <ImageDiv>
+                                    {displayImageOrDefault(Case.vidLink)}
+                                </ImageDiv>
+                                <Caption>
+                                    {Case.caption }
+                                </Caption>
+                                <div style={{display:"flex", flexDirection:"row", justifyContent:"center"}}>
+                                    <Grid item align="center" xs={7} sm={5} lg={3} >
+                                        <StudiesButtons>
+                                            PDF
+                                        </StudiesButtons>
+                                    </Grid>
+                                    <Grid item align="center" xs={7} sm={4} lg={3} >
+                                        <StudiesButtons>
+                                            Reg File
+                                        </StudiesButtons>
+                                    </Grid>
+                                </div>
+                            </Grid> 
+                        )
+                    })}
+                </Grid>
             </MainContent>
         </Contain>
         );
