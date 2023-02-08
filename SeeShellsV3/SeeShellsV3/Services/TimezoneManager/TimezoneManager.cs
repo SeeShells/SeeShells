@@ -85,6 +85,7 @@ namespace SeeShellsV3.Services
 
             // Update ShellEvent collection so that the timeline gets updated
             ShellEvents.FilteredView.Refresh();
+            ShellItems.FilteredView.Refresh();
         }
 
         /// <summary>
