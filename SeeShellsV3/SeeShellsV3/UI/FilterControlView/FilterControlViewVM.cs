@@ -164,9 +164,10 @@ namespace SeeShellsV3.UI
 
         void selectChange(object sender, PropertyChangedEventArgs e)
         {
-            if (Selected.CurrentData != null)
+            if (Selected.CurrentData != null && Selected.regView)
             {
                 ShellItem temp = (ShellItem)Selected.CurrentData;
+
 
                 if (temp.Place != null && temp.Place.PathName != null)
                 {

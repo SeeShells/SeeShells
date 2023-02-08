@@ -61,9 +61,11 @@ namespace SeeShellsV3.UI
 
         private void DataGrid_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine("Testing");
             if (e.AddedCells.Count == 0)
                 return;
 
+            ViewModel.Selected.regView = false;
             ViewModel.Selected.CurrentInspector = e.AddedCells[0].Item;
 
             if (ViewModel.Selected.CurrentInspector is IShellEvent shellEvent && shellEvent.Evidence.Any())

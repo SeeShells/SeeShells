@@ -5,12 +5,15 @@ using System.ComponentModel;
 using Unity;
 
 using SeeShellsV3.Data;
+using Microsoft.Win32;
 
 namespace SeeShellsV3.Repositories
 {
     public class Selected : ISelected
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public Boolean regView { get; set; }
 
         public object CurrentInspector
         {
