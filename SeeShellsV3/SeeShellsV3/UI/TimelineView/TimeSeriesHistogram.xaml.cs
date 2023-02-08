@@ -66,6 +66,18 @@ namespace SeeShellsV3.UI
             _histPlotModel.MouseDown += _histPlotModel_MouseDown;
             _histPlotModel.MouseMove += _histPlotModel_MouseMove;
 
+            _histPlotModel.DefaultColors = new List<OxyColor>
+            {
+                OxyColor.FromRgb(0x33, 0x22, 0x88),
+                OxyColor.FromRgb(0x11, 0x77, 0x33),
+                OxyColor.FromRgb(0x44, 0xAA, 0x99),
+                OxyColor.FromRgb(0x88, 0xCC, 0xEE),
+                OxyColor.FromRgb(0xDD, 0xCC, 0x77),
+                OxyColor.FromRgb(0xCC, 0x66, 0x77),
+                OxyColor.FromRgb(0xAA, 0x44, 0x99),
+                OxyColor.FromRgb(0x88, 0x22, 0x55)
+            };
+
             _histPlotController.UnbindMouseDown(OxyMouseButton.Right);
             _histPlotController.BindMouseDown(OxyMouseButton.Left, PlotCommands.PanAt);
 
