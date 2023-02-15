@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using Microsoft.Win32;
+using ControlzEx.Theming;
 
 using MahApps.Metro.Controls;
 using Unity;
@@ -15,8 +16,6 @@ namespace SeeShellsV3.UI
 {
     public interface IMainWindowVM : IViewModel
     {
-        //public void ImportFromCSV(string path);
-        //void ExportToCSV(string path);
         bool ImportFromRegistry(string hiveLocation = null);
         void RestartApplication(bool runAsAdmin = false);
         string WebsiteUrl { get; }
@@ -46,27 +45,11 @@ namespace SeeShellsV3.UI
             InitializeComponent();
         }
 
-        //private void Import_CSV_Click(object sender, RoutedEventArgs e)
-        //{
-        //    OpenFileDialog openFileDialog = new OpenFileDialog();
-        //    openFileDialog.Filter = "CSV file (*.csv)|*.csv|All files (*.*)|*.*";
-        //    if (openFileDialog.ShowDialog() == true)
-        //        ViewModel.ImportFromCSV(openFileDialog.FileName);
-        //}
-
         private void Export_Window_Click(object sender, RoutedEventArgs e)
         {
             IWindow win = WindowFactory.Create("export");
             win.Show();
         }
-
-		//private void Export_CSV_Click(object sender, RoutedEventArgs e)
-		//{
-		//	OpenFileDialog openFileDialog = new OpenFileDialog();
-		//	openFileDialog.Filter = "CSV file (*.csv)|*.csv|All files (*.*)|*.*";
-		//	if (openFileDialog.ShowDialog() == true)
-		//		ViewModel.ExportToCSV(openFileDialog.FileName);
-		//}
 
 		private void Import_Live_Registry_Click(object sender, RoutedEventArgs e)
         {
