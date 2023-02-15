@@ -17,6 +17,7 @@
     <Color x:Key="MahApps.Colors.Accent2">#9900ABA9</Color>
     <Color x:Key="MahApps.Colors.Accent3">#6600ABA9</Color>
     <Color x:Key="MahApps.Colors.Accent4">#3300ABA9</Color>
+    <Color x:Key="MahApps.Colors.Accent5">#0000ABA9</Color>
     <Color x:Key="MahApps.Colors.ThemeForeground">#FF000000</Color>
     <Color x:Key="MahApps.Colors.ThemeBackground">#FFFFFFFF</Color>
     <Color x:Key="MahApps.Colors.IdealForeground">White</Color>
