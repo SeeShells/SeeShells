@@ -19,6 +19,7 @@
                 </MenuItem>
                 <MenuItem Header="Export" Background="Transparent">
                     <MenuItem Header="As Report" Click="Export_Window_Click"/>
+                    <MenuItem Header="As CSV" Click="Export_CSV_Click"/>
                 </MenuItem>
                 <MenuItem Header="Reset" Background="Transparent" Click="ResetMenuItem_Click"/>
             </Menu>

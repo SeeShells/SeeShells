@@ -19,6 +19,7 @@ namespace SeeShellsV3.UI
         //void ExportToCSV(string path);
         bool ImportFromRegistry(string hiveLocation = null);
         void RestartApplication(bool runAsAdmin = false);
+        void ExportToCSV(string filePath);
         string WebsiteUrl { get; }
         string GithubUrl { get; }
 
@@ -60,13 +61,14 @@ namespace SeeShellsV3.UI
             win.Show();
         }
 
-		//private void Export_CSV_Click(object sender, RoutedEventArgs e)
-		//{
-		//	OpenFileDialog openFileDialog = new OpenFileDialog();
-		//	openFileDialog.Filter = "CSV file (*.csv)|*.csv|All files (*.*)|*.*";
-		//	if (openFileDialog.ShowDialog() == true)
-		//		ViewModel.ExportToCSV(openFileDialog.FileName);
-		//}
+		private void Export_CSV_Click(object sender, RoutedEventArgs e)
+		{
+			SaveFileDialog saveFileDialog = new SaveFileDialog();
+			saveFileDialog.Filter = "CSV file (*.csv)|*.csv|All files (*.*)|*.*";
+            if (saveFileDialog.ShowDialog() == true)
+                ViewModel.ExportToCSV(saveFileDialog.FileName);
+
+        }
 
 		private void Import_Live_Registry_Click(object sender, RoutedEventArgs e)
         {
