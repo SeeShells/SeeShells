@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Windows.Controls;
+using System.Windows.Data;
 using SeeShellsV3.Data;
 using SeeShellsV3.Events;
 using SeeShellsV3.Repositories;
@@ -19,15 +21,22 @@ namespace SeeShellsV3.Services
 
         private IShellEventCollection ShellEvents { get; set; }
         private IShellItemCollection ShellItems { get; set; }
+        private ISelected Selected { get; set; }
+
+        [Dependency] public IShellEventManager ShellEventManager { get; set; }
+
 
 
         public TimezoneManager(
             [Dependency] IShellEventCollection shellEvents,
-            [Dependency] IShellItemCollection shellItems
+            [Dependency] IShellItemCollection shellItems,
+            [Dependency] ISelected selected
         )
         {
             ShellItems = shellItems;
             ShellEvents = shellEvents;
+            Selected = selected;
+
 
             // Populates SupportedTimezones with all the timezones currently available in SeeShells
             SupportedTimezones.Add(new Timezone("Coordinated Universal Time", "UTC"));
@@ -37,6 +46,7 @@ namespace SeeShellsV3.Services
             SupportedTimezones.Add(new Timezone("Pacific Standard Time", "PST"));
         }
 
+
         /// <summary>
         /// Handles the changing of timestamps throughout the application.
         /// </summary>
@@ -44,6 +54,7 @@ namespace SeeShellsV3.Services
         {
             // Store the timezone that we are switching from for conversion purposes
             Timezone oldTimezone = CurrentTimezone;
+
             
             // Update CurrentTimezone to the new timezone
             CurrentTimezone = GetTimezone(timezone);
@@ -77,15 +88,31 @@ namespace SeeShellsV3.Services
                 }
             }
 
+
             // Loop through all ShellEvents and update their timestamps
-            foreach (var shellEvent in ShellEvents)
+            foreach (ShellEvent shellEvent in ShellEvents)
             {
                 shellEvent.TimeStamp = ConvertTimezone(shellEvent.TimeStamp, oldTimezone);
             }
 
             // Update ShellEvent collection so that the timeline gets updated
+            CollectionViewSource viewSource = new CollectionViewSource();
+            ShellEvent temp = (ShellEvent)Selected.CurrentInspector;
+            foreach (ShellItem i in temp.Evidence)
+            {
+                viewSource.Source = i.ActualFields;
+                ICollectionView view = viewSource.View;
+
+                view.Refresh();
+            }
+
+            Selected.CurrentInspector = null;
+            Selected.CurrentData = null;
+
             ShellEvents.FilteredView.Refresh();
             ShellItems.FilteredView.Refresh();
+
+
         }
 
         /// <summary>

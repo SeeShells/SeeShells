@@ -179,7 +179,6 @@ namespace SeeShellsV3.UI
                      if (!s.RenderInLegend)
                      {
                          s.FillColor = OxyColor.FromAColor((byte)(0), s.ActualFillColor);
-                         System.Diagnostics.Debug.WriteLine("Testing!! " + s.ActualFillColor);
 
                      }
                      else
@@ -254,7 +253,6 @@ namespace SeeShellsV3.UI
 
             foreach (var group in groups)
             {
-                System.Diagnostics.Debug.WriteLine(group.Count());
                 OxyColor color = _histPlotModel.DefaultColors[count++ % _histPlotModel.DefaultColors.Count];
                 colors[group.Key?.ToString()] = color;
                 HistogramSeries s = new HistogramSeries();
@@ -292,7 +290,7 @@ namespace SeeShellsV3.UI
                .Select(x => x.date)
                .OrderBy(x => x);
 
-                var testing = HistogramHelpers.Collect(
+                var realBins = HistogramHelpers.Collect(
                     dates.Select(x => DateTimeAxis.ToDouble(x)),
                     binBreaks,
                     options
@@ -300,7 +298,7 @@ namespace SeeShellsV3.UI
 
                 OxyColor color = colors[group.Key?.ToString()];
 
-                foreach (HistogramItem bin in testing)
+                foreach (HistogramItem bin in realBins)
                 {
 
                     if (bin.Count == 0)
@@ -323,13 +321,12 @@ namespace SeeShellsV3.UI
             for (int i = 0; i < size; i++)
             {
                 HistogramSeries s = new HistogramSeries();
-                IList testing = new List<HistogramItem>();
+                IList newBin = new List<HistogramItem>();
                 HistogramItem curr = bins.Dequeue();
-                testing.Add(curr);
-                s.ItemsSource = testing;
+                newBin.Add(curr);
+                s.ItemsSource = newBin;
                 s.RenderInLegend = false;
                 s.FillColor = binColors[curr.ToString()];
-                System.Diagnostics.Debug.WriteLine(s.ActualFillColor);
                 _histPlotModel.Series.Add(s);
             }
 
