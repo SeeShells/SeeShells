@@ -11,6 +11,8 @@ using MahApps.Metro.Controls;
 using Unity;
 
 using SeeShellsV3.Factories;
+using System.Collections.Generic;
+using System.Windows.Media;
 
 namespace SeeShellsV3.UI
 {
@@ -40,8 +42,11 @@ namespace SeeShellsV3.UI
         [Dependency]
         public IWindowFactory WindowFactory { private get; set; }
 
+        Uri currTheme;
+
         public MainWindow()
         {
+            currTheme = new Uri(@"UI/Themes/DarkTheme.xaml", UriKind.Relative);
             InitializeComponent();
         }
 
@@ -83,9 +88,26 @@ namespace SeeShellsV3.UI
         private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
         {
             if (sender is ToggleSwitch s && s.IsOn)
-                (Application.Current as App).ChangeTheme(new Uri(@"UI/Themes/DarkTheme.xaml", UriKind.Relative));
+                currTheme = new Uri(@"UI/Themes/DarkTheme.xaml", UriKind.Relative);
             else
-                (Application.Current as App).ChangeTheme(new Uri(@"UI/Themes/LightTheme.xaml", UriKind.Relative));
+                currTheme = new Uri(@"UI/Themes/LightTheme.xaml", UriKind.Relative);
+            (Application.Current as App).ChangeTheme(currTheme);
+        }
+
+        private void SplitButton_OnSelectionChanged(object sender, RoutedEventArgs e)
+        {
+            if (sender is SplitButton splitButton)
+            {
+                TimeSeriesHistogram histogram = FindName("Histogram") as TimeSeriesHistogram;
+                if (histogram != null) {
+                    histogram.histPlotModel_setColors(splitButton.SelectedIndex);
+                    System.Diagnostics.Debug.WriteLine("Histogram is not null");
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("Histogram is null");
+                }
+            }
         }
     }
 }

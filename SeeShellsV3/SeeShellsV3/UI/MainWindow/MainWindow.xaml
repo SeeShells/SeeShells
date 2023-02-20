@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SeeShellsV3.UI"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:xcad="https://github.com/Dirkster99/AvalonDock"
         mc:Ignorable="d"
@@ -32,6 +33,20 @@
                 <SolidColorBrush x:Key="MahApps.Brushes.ToggleSwitch.FillOn" Color="{DynamicResource MahApps.Colors.ThemeBackground}" />
                 <SolidColorBrush x:Key="MahApps.Brushes.ToggleSwitch.FillOnPointerOver" Color="{DynamicResource MahApps.Colors.Gray7}" />
             </mah:WindowCommands.Resources>
+            
+            <mah:SplitButton SelectedIndex="0"
+                             HorizontalAlignment="Right"
+                             SelectionChanged="SplitButton_OnSelectionChanged"
+                             >
+                <mah:SplitButton.ItemsSource>
+                    <x:Array Type="system:String">
+                        <system:String>Tol1</system:String>
+                        <system:String>Tol2</system:String>
+                        <system:String>Pastel</system:String>
+                    </x:Array>
+                </mah:SplitButton.ItemsSource>
+            </mah:SplitButton>
+                             
             <mah:ToggleSwitch OffContent="Light"
                               OnContent="Dark"
                               Toggled="ToggleSwitch_Toggled"
@@ -39,7 +54,7 @@
                               HorizontalAlignment="Right"
                               HorizontalContentAlignment="Right"
                               ContentDirection="LeftToRight"
-                              Margin="5 0"/>
+                              Margin="1 0"/>
         </mah:WindowCommands>
     </mah:MetroWindow.RightWindowCommands>
     <Grid>

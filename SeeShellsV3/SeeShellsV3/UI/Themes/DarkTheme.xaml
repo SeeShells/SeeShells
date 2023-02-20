@@ -4,6 +4,7 @@
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
         <ResourceDictionary Source="./DarkThemeBehind.xaml" />
+        <ResourceDictionary Source="./Palettes.xaml" />
 
         <ResourceDictionary Source="/AvalonDock.Themes.VS2013;component/DarkBrushs.xaml" />
         <ResourceDictionary Source="/AvalonDock.Themes.VS2013;component/Themes/Generic.xaml" />
