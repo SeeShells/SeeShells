@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Security.Principal;
 using System.Threading;
@@ -9,6 +11,7 @@ using System.Windows;
 using Unity;
 
 using SeeShellsV3.Data;
+using SeeShellsV3.Events;
 using SeeShellsV3.Repositories;
 using SeeShellsV3.Services;
 
@@ -18,6 +21,7 @@ namespace SeeShellsV3.UI
     {
         [Dependency] public IRegistryImporter RegImporter { get; set; }
         [Dependency] public IShellEventManager ShellEventManager { get; set; }
+        [Dependency] public ITimezoneManager TimezoneManager { get; set; }
         [Dependency] public ISelected Selected { get; set; }
 
         public string WebsiteUrl => @"https://rickleinecker.github.io/SeeShells-V3";
@@ -89,6 +93,13 @@ namespace SeeShellsV3.UI
 
             await Task.Run(() => Thread.Sleep(3000));
             Status = string.Empty;
+        }
+
+        public void ChangeTimezone(string timezone)
+        {
+            Debug.WriteLine("ChangeTime");
+            TimezoneManager.TimezoneChangeHandler(timezone);
+            NotifyPropertyChanged(nameof(TimezoneManager));
         }
     }
 }

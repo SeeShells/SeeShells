@@ -1,13 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using Microsoft.Win32;
 using ControlzEx.Theming;
 
 using MahApps.Metro.Controls;
+using SeeShellsV3.Events;
 using Unity;
 
 using SeeShellsV3.Factories;
@@ -20,6 +24,7 @@ namespace SeeShellsV3.UI
     {
         bool ImportFromRegistry(string hiveLocation = null);
         void RestartApplication(bool runAsAdmin = false);
+        void ChangeTimezone(string timezone);
         string WebsiteUrl { get; }
         string GithubUrl { get; }
 
@@ -108,6 +113,11 @@ namespace SeeShellsV3.UI
                     System.Diagnostics.Debug.WriteLine("Histogram is null");
                 }
             }
+        }
+
+        private void ChangeTimezone_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.ChangeTimezone((sender as MenuItem).Header as string);
         }
     }
 }

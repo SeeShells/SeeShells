@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+	  <LangVersion>11.0</LangVersion>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
 	<PublishSingleFile>true</PublishSingleFile>
 	<SelfContained>true</SelfContained>
 	<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
@@ -49,6 +50,11 @@
     <EmbeddedResource Include="Config.json" />
     <Resource Include="UI\Images\beach2.png" />
     <Resource Include="UI\Images\SeeShells.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Events\" />
+    <Folder Include="Services\TimezoneManager\" />
   </ItemGroup>
 
 </Project>
