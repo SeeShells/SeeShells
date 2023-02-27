@@ -14,22 +14,12 @@ const options = require("./HowToUseArray.json")
 
 
 
-export default function HowToUse()
+export default function HowToUse({size})
 {
     let click = false;
     let button = null;
 
     const [finished, setFinished] = useState(false);
-
-    function testFunc()
-    {
-        console.log("Yo!!")
-    }
-
-    function isRendered()
-    {
-
-    }
 
     const optionsScroll = (option) =>
     {
@@ -105,7 +95,7 @@ export default function HowToUse()
 
     return (
         <Contain>
-            <Header tab="How to Use"/>
+            <Header tab="How to Use" size={size}/>
             <HeaderContent>
                 <Title>
                     How To Use

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import HeaderTab from "./HeaderTab";
 import logo from "./seeshellsLogo-flipped.png";
 import { useNavigate } from "react-router-dom";
+import {FaBars} from "react-icons/fa";
 
 const tabs = require("./tabs.json")
 
@@ -18,6 +19,7 @@ export default function Header(props)
     height: "10vh";
     color: #FFFBF0;
     font-family: "IBM Plex Sans Condensed";
+    margin-bottom:-10px;
   `
 
     const HeaderContent = styled.div`
@@ -66,6 +68,40 @@ export default function Header(props)
         button.remove()
     }
 
+    function checkSize()
+    {
+        console.log("Testing" + props.size.width);
+        if (props.size.width <= 750)
+        {
+            return(
+                <HeaderContent>
+                    <FaBars style={{width:"40px", height:"40px"}} />
+                    <div style={{display:"flex", flexDirection: "row", alignItems:"center"}}> 
+                        <h1 style={{fontSize: 35}}>
+                        SeeShells
+                        </h1>
+                    </div>
+                </HeaderContent>
+            )
+        }
+        else
+        {
+            return(
+               <HeaderContent>
+                    {about()}
+                    <div style={{display: "flex", flexDirection: "row"}}>
+                        {tabs.tabs.map((tab) =>{
+                        return(
+                            <HeaderTab selected = {(tab == props.tab)} tab = {tab}>
+                                {tab}
+                            </HeaderTab>
+                        )
+                        })}
+                    </div>
+                </HeaderContent>
+            )
+        }
+    }
 
     function about()
     {
@@ -75,7 +111,7 @@ export default function Header(props)
                 <div style={{display:"flex", flexDirection: "row", alignItems:"center"}}>
                     <HomeButton onClick={() => {navigation("/")}}>
                         <h1 style={{fontSize: 35}}>
-                        SeeShells
+                            SeeShells
                         </h1>
                         <Logo>
                             <img src={logo} width={"50vw"} height={"50vh"}/>
@@ -90,7 +126,7 @@ export default function Header(props)
         else
         {
             return(
-                <div style={{display:"flex", flexDirection: "row", alignItems:"center"}}> 
+                <div style={{display:"flex", flexDirection: "row", alignItems:"center", border:"2px solid white"}}> 
                     <h1 style={{fontSize: 35}}>
                     SeeShells
                     </h1>
@@ -101,18 +137,7 @@ export default function Header(props)
 
   return (
     <HeaderBar>
-      <HeaderContent>
-       {about()}
-        <div style={{display: "flex", flexDirection: "row"}}>
-            {tabs.tabs.map((tab) =>{
-            return(
-                <HeaderTab selected = {(tab == props.tab)} tab = {tab}>
-                    {tab}
-                </HeaderTab>
-            )
-            })}
-        </div>
-      </HeaderContent>
+        {checkSize()}
     </HeaderBar>
   );
 }
