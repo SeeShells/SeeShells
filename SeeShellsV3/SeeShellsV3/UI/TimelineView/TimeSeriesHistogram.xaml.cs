@@ -83,6 +83,7 @@ namespace SeeShellsV3.UI
 
         internal void histPlotModel_setColors(int index = 0)
         {
+            palette = new List<OxyColor>();
             List<Color> colors = new List<Color>((IEnumerable<Color>)Application.Current.Resources["Palette" + index.ToString()]);
             foreach (Color color in colors)
             {
@@ -95,8 +96,6 @@ namespace SeeShellsV3.UI
                     );
             }
             _histPlotModel.DefaultColors = palette;
-            //int i = 0;
-            //_histPlotModel.Series.OfType<HistogramSeries>().ForEach(s => s.defaultFillColor = palette[i++]);
             Update();
         }
 

@@ -4,12 +4,12 @@
                     xmlns:oxy="http://oxyplot.org/wpf">
     <x:Array Type="Color" x:Key="Palette0">
         <Color>#332288</Color>
-        <Color>#117733</Color>
-        <Color>#44AA99</Color>
-        <Color>#88CCEE</Color>
         <Color>#DDCC77</Color>
+        <Color>#117733</Color>
         <Color>#CC6677</Color>
+        <Color>#44AA99</Color>
         <Color>#AA4499</Color>
+        <Color>#88CCEE</Color>
         <Color>#882255</Color>
     </x:Array>
     <x:Array Type="Color" x:Key="Palette1">

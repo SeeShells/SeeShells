@@ -15,8 +15,6 @@ using SeeShellsV3.Events;
 using Unity;
 
 using SeeShellsV3.Factories;
-using System.Collections.Generic;
-using System.Windows.Media;
 
 namespace SeeShellsV3.UI
 {
@@ -101,18 +99,9 @@ namespace SeeShellsV3.UI
 
         private void SplitButton_OnSelectionChanged(object sender, RoutedEventArgs e)
         {
-            if (sender is SplitButton splitButton)
-            {
-                TimeSeriesHistogram histogram = FindName("Histogram") as TimeSeriesHistogram;
-                if (histogram != null) {
-                    histogram.histPlotModel_setColors(splitButton.SelectedIndex);
-                    System.Diagnostics.Debug.WriteLine("Histogram is not null");
-                }
-                else
-                {
-                    System.Diagnostics.Debug.WriteLine("Histogram is null");
-                }
-            }
+            if (sender is SplitButton splitButton && 
+                Timeline.FindChild<TimeSeriesHistogram>("Histogram") is TimeSeriesHistogram histogram)
+                histogram.histPlotModel_setColors(splitButton.SelectedIndex);
         }
 
         private void ChangeTimezone_Click(object sender, RoutedEventArgs e)
