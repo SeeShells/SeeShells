@@ -63,7 +63,7 @@ namespace SeeShellsV3.UI
             _histPlotModel.Axes.Add(_dateAxis);
             _histPlotModel.Axes.Add(_freqAxis);
             _histPlotModel.LegendPlacement = LegendPlacement.Outside;
-            
+
             _histPlotModel.MouseDown += _histPlotModel_MouseDown;
             _histPlotModel.MouseMove += _histPlotModel_MouseMove;
 
@@ -121,7 +121,7 @@ namespace SeeShellsV3.UI
 
             if (_histPlotModel.LegendArea.Contains(e.Position))
             {
-                int index = (int)((e.Position.Y - _histPlotModel.LegendArea.Top - _histPlotModel.LegendPadding) / (_histPlotModel.LegendSymbolLength));
+                int index = (int)((e.Position.X - _histPlotModel.LegendArea.Left) / (_histPlotModel.LegendSymbolLength));
 
                 try
                 {
@@ -185,17 +185,20 @@ namespace SeeShellsV3.UI
             HistogramPlot.InvalidatePlot();
 
             if (!_histPlotModel.Series.OfType<HistogramSeries>().Where(s => s.IsSelected()).Any())
+            {
+
                 _histPlotModel.Series.OfType<HistogramSeries>().ForEach(s => s.FillColor = OxyColor.FromAColor((byte)255, s.ActualFillColor));
+            }
             else
                 _histPlotModel.Series.OfType<HistogramSeries>().ForEach(s =>
                  {
-                     if (!s.RenderInLegend)
-                     {
-                         s.FillColor = OxyColor.FromAColor((byte)(0), s.ActualFillColor);
+                 if (!s.RenderInLegend)
+                 {
+                     s.FillColor = OxyColor.FromAColor((byte)(0), s.ActualFillColor);
 
-                     }
-                     else
-                        s.FillColor = OxyColor.FromAColor((byte)(s.IsSelected() ? 255 : 20), s.ActualFillColor);
+                 }
+                 else
+                     s.FillColor = OxyColor.FromAColor((byte)(s.IsSelected() ? 255 : 20), s.ActualFillColor);
                  });   
         }
 
@@ -204,7 +207,8 @@ namespace SeeShellsV3.UI
             _histPlotModel.IsLegendVisible = true;
             _histPlotModel.LegendTextColor = OxyColor.FromArgb(TextColor.A, TextColor.R, TextColor.G, TextColor.B);
             _histPlotModel.LegendTitleColor = OxyColor.FromArgb(TextColor.A, TextColor.R, TextColor.G, TextColor.B);
-            _histPlotModel.LegendPosition = LegendPosition.LeftMiddle;
+            _histPlotModel.LegendPosition = LegendPosition.TopCenter;
+            _histPlotModel.LegendOrientation = LegendOrientation.Horizontal;
             _histPlotModel.LegendSymbolLength = 15.0;
             _histPlotModel.PlotAreaBorderColor = OxyColor.FromArgb(PlotAreaBorderColor.A, PlotAreaBorderColor.R, PlotAreaBorderColor.G, PlotAreaBorderColor.B);
 
