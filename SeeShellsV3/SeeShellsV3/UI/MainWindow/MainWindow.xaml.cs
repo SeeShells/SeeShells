@@ -16,7 +16,6 @@ namespace SeeShellsV3.UI
     public interface IMainWindowVM : IViewModel
     {
         //public void ImportFromCSV(string path);
-        //void ExportToCSV(string path);
         bool ImportFromRegistry(string hiveLocation = null);
         void RestartApplication(bool runAsAdmin = false);
         void ExportToCSV(string filePath);
