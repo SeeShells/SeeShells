@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Win32;
 
 using MahApps.Metro.Controls;
+using SeeShellsV3.Data;
 using Unity;
 
 using SeeShellsV3.Factories;
@@ -19,6 +20,7 @@ namespace SeeShellsV3.UI
         bool ImportFromRegistry(string hiveLocation = null);
         void RestartApplication(bool runAsAdmin = false);
         void ExportToCSV(string filePath);
+        void AddToReportCollection();
         string WebsiteUrl { get; }
         string GithubUrl { get; }
 
@@ -96,6 +98,11 @@ namespace SeeShellsV3.UI
 
             if (result == MessageBoxResult.Yes)
                 ViewModel.RestartApplication(isElevated);
+        }
+
+        private void AddReport_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.AddToReportCollection();
         }
 
         private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)

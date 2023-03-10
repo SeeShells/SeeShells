@@ -7,6 +7,7 @@ using System.Windows.Media;
 using Unity;
 using System.Windows.Documents;
 using SeeShellsV3.Data;
+using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace SeeShellsV3.Services
 {
@@ -173,63 +174,63 @@ namespace SeeShellsV3.Services
         /// <param name="fd">The <see cref="FlowDocument"/> to that <see cref="module"/> will be rendered to.</param>
         public void RenderInspector(IPdfModule module, FlowDocument fd)
         {
-            // Store inspector variables
             InspectorModule inspector = module as InspectorModule;
-            IShellEvent shell = inspector?.Selected.CurrentInspector as IShellEvent;
-            IShellItem item = inspector?.Selected.CurrentData as IShellItem;
-
-            // Construct a header for this module
-            Paragraph header = new Paragraph(new Run($"Inspector - {shell.Description}"));
-            header.Background = Brushes.Silver;
-            header.FontSize = 24;
-            header.FontWeight = FontWeights.Bold;
-            fd.Blocks.Add(header);
-
-            // ----Formatting below follows pattern from the InspectorView----
-            
-            // Show long description of the Shell Event
-            fd.Blocks.Add(new Paragraph(new Run(shell?.LongDescription)));
-
-            // Create overview list of the Shell Event
-            List identifiers = new List();
-            identifiers.ListItems.Add(new ListItem(new Paragraph(new Run($"Description: {shell.Description}"))));
-            identifiers.ListItems.Add(new ListItem(new Paragraph(new Run($"Event Time: {shell.TimeStamp}"))));
-            identifiers.ListItems.Add(new ListItem(new Paragraph(new Run($"User: {shell.User}"))));
-            identifiers.ListItems.Add(new ListItem(new Paragraph(new Run($"Location Name: {shell.Place.Name}"))));
-            identifiers.ListItems.Add(new ListItem(new Paragraph(new Run($"Location Path: {shell.Place.PathName}"))));
-            fd.Blocks.Add(identifiers);
-
-            // Add Shellbag Evidence header
-            Paragraph informationHeader = new Paragraph(new Run("Shellbag Information"));
-            informationHeader.FontSize = 20;
-            informationHeader.FontWeight = FontWeights.Bold;
-            fd.Blocks.Add(informationHeader);
-
-            // Create list storing Shellbag Information
-            List bagInfo = new List();
-            bagInfo.ListItems.Add(new ListItem(new Paragraph(new Run($"Description: {item.Description}"))));
-            bagInfo.ListItems.Add(new ListItem(new Paragraph(new Run($"Type: {item.TypeName}"))));
-            bagInfo.ListItems.Add(new ListItem(new Paragraph(new Run($"Subtype: {item.SubtypeName}"))));
-            bagInfo.ListItems.Add(new ListItem(new Paragraph(new Run($"Location Name: {item.Place.Name}"))));
-            bagInfo.ListItems.Add(new ListItem(new Paragraph(new Run($"Location Path: {item.Place.PathName}"))));
-            bagInfo.ListItems.Add(new ListItem(new Paragraph(new Run($"Registry Path: {item.RegistryHive.Path}"))));
-            bagInfo.ListItems.Add(new ListItem(new Paragraph(new Run($"Registry Owner: {item.RegistryHive.User}"))));
-            bagInfo.ListItems.Add(new ListItem(new Paragraph(new Run($"Last Registry Write Date: {item.LastRegistryWriteDate}"))));
-            fd.Blocks.Add(bagInfo);
-
-            // Create Shellbag Fields header
-            Paragraph fieldsHeader = new Paragraph(new Run("Shellbag Fields"));
-            fieldsHeader.FontSize = 20;
-            fieldsHeader.FontWeight = FontWeights.Bold;
-            fd.Blocks.Add(fieldsHeader);
-
-            // Create list storing Fields
-            List fields = new List();
-            foreach (KeyValuePair<string, object> field in item.Fields)
+            foreach (IShellEvent shell in inspector.ReportEvents.SelectedEvents)
             {
-                fields.ListItems.Add(new ListItem(new Paragraph(new Run($"{field.Key}: {field.Value}"))));
+                IShellItem item = shell.Evidence.First();
+                // Construct a header for this module
+                Paragraph header = new Paragraph(new Run($"Inspector - {shell.Description}"));
+                header.Background = Brushes.Silver;
+                header.FontSize = 24;
+                header.FontWeight = FontWeights.Bold;
+                fd.Blocks.Add(header);
+
+                // ----Formatting below follows pattern from the InspectorView----
+
+                // Show long description of the Shell Event
+                fd.Blocks.Add(new Paragraph(new Run(shell?.LongDescription)));
+
+                // Create overview list of the Shell Event
+                List identifiers = new List();
+                identifiers.ListItems.Add(new ListItem(new Paragraph(new Run($"Description: {shell.Description}"))));
+                identifiers.ListItems.Add(new ListItem(new Paragraph(new Run($"Event Time: {shell.TimeStamp}"))));
+                identifiers.ListItems.Add(new ListItem(new Paragraph(new Run($"User: {shell.User}"))));
+                identifiers.ListItems.Add(new ListItem(new Paragraph(new Run($"Location Name: {shell.Place.Name}"))));
+                identifiers.ListItems.Add(new ListItem(new Paragraph(new Run($"Location Path: {shell.Place.PathName}"))));
+                fd.Blocks.Add(identifiers);
+
+                // Add Shellbag Evidence header
+                Paragraph informationHeader = new Paragraph(new Run("Shellbag Information"));
+                informationHeader.FontSize = 20;
+                informationHeader.FontWeight = FontWeights.Bold;
+                fd.Blocks.Add(informationHeader);
+
+                // Create list storing Shellbag Information
+                List bagInfo = new List();
+                bagInfo.ListItems.Add(new ListItem(new Paragraph(new Run($"Description: {item.Description}"))));
+                bagInfo.ListItems.Add(new ListItem(new Paragraph(new Run($"Type: {item.TypeName}"))));
+                bagInfo.ListItems.Add(new ListItem(new Paragraph(new Run($"Subtype: {item.SubtypeName}"))));
+                bagInfo.ListItems.Add(new ListItem(new Paragraph(new Run($"Location Name: {item.Place.Name}"))));
+                bagInfo.ListItems.Add(new ListItem(new Paragraph(new Run($"Location Path: {item.Place.PathName}"))));
+                bagInfo.ListItems.Add(new ListItem(new Paragraph(new Run($"Registry Path: {item.RegistryHive.Path}"))));
+                bagInfo.ListItems.Add(new ListItem(new Paragraph(new Run($"Registry Owner: {item.RegistryHive.User}"))));
+                bagInfo.ListItems.Add(new ListItem(new Paragraph(new Run($"Last Registry Write Date: {item.LastRegistryWriteDate}"))));
+                fd.Blocks.Add(bagInfo);
+
+                // Create Shellbag Fields header
+                Paragraph fieldsHeader = new Paragraph(new Run("Shellbag Fields"));
+                fieldsHeader.FontSize = 20;
+                fieldsHeader.FontWeight = FontWeights.Bold;
+                fd.Blocks.Add(fieldsHeader);
+
+                // Create list storing Fields
+                List fields = new List();
+                foreach (KeyValuePair<string, object> field in item.Fields)
+                {
+                    fields.ListItems.Add(new ListItem(new Paragraph(new Run($"{field.Key}: {field.Value}"))));
+                }
+                fd.Blocks.Add(fields);
             }
-            fd.Blocks.Add(fields);
         }
 	}
 }

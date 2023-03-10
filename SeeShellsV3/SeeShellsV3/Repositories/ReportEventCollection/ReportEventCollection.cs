@@ -6,13 +6,14 @@ namespace SeeShellsV3.Repositories
 {
     public class ReportEventCollection: IReportEventCollection
     {
-        public IShellEventCollection SelectedEvents { get; set; }
+        public IShellEventCollection SelectedEvents { get; } = new ShellEventCollection();
         public bool HasEvents { get; set; }
         public bool AddEvent(IShellEvent shellEvent)
         {
             try
             {
                 SelectedEvents.Add(shellEvent);
+                HasEvents = true;
             }
             catch (Exception e)
             {

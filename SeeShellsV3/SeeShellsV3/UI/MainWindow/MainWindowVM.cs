@@ -22,6 +22,7 @@ namespace SeeShellsV3.UI
         [Dependency] public IShellEventManager ShellEventManager { get; set; }
         [Dependency] public IShellEventCollection ShellEvents { get; set; }
         [Dependency] public ISelected Selected { get; set; }
+        [Dependency] public IReportEventCollection ReportEvents { get; set; }
 
         public string WebsiteUrl => @"https://rickleinecker.github.io/SeeShells-V3";
         public string GithubUrl => @"https://github.com/RickLeinecker/SeeShells-V3";
@@ -113,6 +114,13 @@ namespace SeeShellsV3.UI
 
             csv.Flush();
             writer.Close();
+        }
+
+        // TODO: Handle errors
+        public void AddToReportCollection()
+        {
+            IShellEvent shell = Selected.CurrentInspector as IShellEvent;
+            ReportEvents.AddEvent(shell);
         }
     }
 }

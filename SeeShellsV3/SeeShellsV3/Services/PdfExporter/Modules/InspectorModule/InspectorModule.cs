@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Markup;
 using SeeShellsV3.Repositories;
@@ -11,8 +10,7 @@ namespace SeeShellsV3.Services
     public class InspectorModule: IPdfModule
     {
         public string Name => "Inspector";
-		[Unity.Dependency]
-		public ISelected Selected { get; set; }
+		[Dependency] public IReportEventCollection ReportEvents { get; set; }
         private FrameworkElement Inspector { get; set; }
         public UIElement Render()
         {

@@ -11,7 +11,7 @@ namespace SeeShellsV3.Repositories
         /// <summary>
         /// Collection that stores the selected ShellEvents.
         /// </summary>
-        IShellEventCollection SelectedEvents { get; set; }
+        IShellEventCollection SelectedEvents { get; }
 
         /// <summary>
         /// Boolean that signifies whether the collection is empty or not.
