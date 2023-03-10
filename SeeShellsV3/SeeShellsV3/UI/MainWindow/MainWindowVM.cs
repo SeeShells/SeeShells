@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -95,12 +96,19 @@ namespace SeeShellsV3.UI
             Status = string.Empty;
         }
 
-        public void ExportToCSV(string filePath)
+        public void ExportToCSV(string filePath, string source)
         {
             StreamWriter writer = new StreamWriter(filePath);
             CsvWriter csv = new CsvWriter(writer, CultureInfo.CurrentCulture);
 
-            foreach (ShellEvent shellEvent in ShellEvents.FilteredView)
+            ICollectionView eventSource = ShellEvents.FilteredView;
+
+            if (source == "Export Selected")
+            {
+                eventSource = ReportEvents.SelectedEvents.FilteredView;
+            }
+
+            foreach (ShellEvent shellEvent in eventSource)
             {
                 csv.WriteField(shellEvent.TimeStamp);
                 csv.WriteField(shellEvent.Description);

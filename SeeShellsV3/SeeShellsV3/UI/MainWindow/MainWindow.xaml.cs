@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using Microsoft.Win32;
 
 using MahApps.Metro.Controls;
@@ -19,7 +20,7 @@ namespace SeeShellsV3.UI
         //public void ImportFromCSV(string path);
         bool ImportFromRegistry(string hiveLocation = null);
         void RestartApplication(bool runAsAdmin = false);
-        void ExportToCSV(string filePath);
+        void ExportToCSV(string filePath, string source);
         void AddToReportCollection();
         string WebsiteUrl { get; }
         string GithubUrl { get; }
@@ -67,7 +68,7 @@ namespace SeeShellsV3.UI
 			SaveFileDialog saveFileDialog = new SaveFileDialog();
 			saveFileDialog.Filter = "CSV file (*.csv)|*.csv|All files (*.*)|*.*";
             if (saveFileDialog.ShowDialog() == true)
-                ViewModel.ExportToCSV(saveFileDialog.FileName);
+                ViewModel.ExportToCSV(saveFileDialog.FileName, (sender as MenuItem).Header as string);
 
         }
 
