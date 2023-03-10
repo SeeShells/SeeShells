@@ -46,6 +46,7 @@ namespace SeeShellsV3
             container.RegisterSingleton<IShellItemCollection, ShellItemCollection>();
             container.RegisterSingleton<IShellEventCollection, ShellEventCollection>();
             container.RegisterSingleton<ISelected, Selected>();
+            container.RegisterSingleton<IReportEventCollection, ReportEventCollection>();
 
             // Register Service Types
             container.RegisterType<IPdfExporter, PdfExporter>();
