@@ -51,4 +51,8 @@
     <Resource Include="UI\Images\SeeShells.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\ReportEventCollection\" />
+  </ItemGroup>
+
 </Project>
