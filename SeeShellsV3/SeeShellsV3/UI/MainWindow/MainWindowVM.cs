@@ -101,8 +101,9 @@ namespace SeeShellsV3.UI
             StreamWriter writer = new StreamWriter(filePath);
             CsvWriter csv = new CsvWriter(writer, CultureInfo.CurrentCulture);
 
+            // Determine whether the events added to the report should be exported or the filtered view
+            // should be exported based on user input
             ICollectionView eventSource = ShellEvents.FilteredView;
-
             if (source == "Export Selected")
             {
                 eventSource = ReportEvents.SelectedEvents.FilteredView;
