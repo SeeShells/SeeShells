@@ -120,7 +120,7 @@ namespace SeeShellsV3.UI
         public void AddToReportCollection()
         {
             IShellEvent shell = Selected.CurrentInspector as IShellEvent;
-            ReportEvents.AddEvent(shell);
+            ReportEvents.Add(shell);
         }
     }
 }

@@ -23,13 +23,20 @@ namespace SeeShellsV3.Repositories
         /// </summary>
         /// <param name="shellEvent">Event to be added to the collection.</param>
         /// <returns>Boolean to signify whether the operation was successful.</returns>
-        bool AddEvent(IShellEvent shellEvent);
+        bool Add(IShellEvent shellEvent);
 
         /// <summary>
         /// Removes an event to the collection.
         /// </summary>
         /// <param name="shellEvent">Event to be removed from the collection.</param>
         /// <returns>Boolean to signify whether the operation was successful.</returns>
-        bool RemoveEvent(IShellEvent shellEvent);
+        bool Remove(IShellEvent shellEvent);
+
+        /// <summary>
+        /// Checks to see if a given Shell Event is already in the collection.
+        /// </summary>
+        /// <param name="shellEvent">Event to check if it is in the collection.</param>
+        /// <returns>Boolean to signify whether the event is in the collection or not.</returns>
+        bool Contains(IShellEvent shellEvent);
     }
 }
