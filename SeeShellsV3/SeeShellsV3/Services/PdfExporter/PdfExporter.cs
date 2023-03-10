@@ -185,7 +185,6 @@ namespace SeeShellsV3.Services
             header.FontWeight = FontWeights.Bold;
             fd.Blocks.Add(header);
 
-
             // ----Formatting below follows pattern from the InspectorView----
             
             // Show long description of the Shell Event
