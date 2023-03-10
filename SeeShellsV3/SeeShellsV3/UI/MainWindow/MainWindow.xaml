@@ -41,9 +41,6 @@
                               HorizontalContentAlignment="Right"
                               ContentDirection="LeftToRight"
                               Margin="5 0"/>
-            <Menu Background="Transparent">
-                <MenuItem Header="Add Selected to Report" Click="AddReport_Click"></MenuItem>
-            </Menu>
         </mah:WindowCommands>
     </mah:MetroWindow.RightWindowCommands>
     <Grid>

@@ -59,5 +59,17 @@ namespace SeeShellsV3.Repositories
         {
             return SelectedEvents.Contains(shellEvent);
         }
+
+        public bool Decide(IShellEvent shellEvent)
+        {
+            if (Contains(shellEvent))
+            {
+                 return Remove(shellEvent);
+            }
+            else
+            {
+                return Add(shellEvent);
+            }
+        }
     }
 }
