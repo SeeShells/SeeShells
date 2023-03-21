@@ -55,6 +55,7 @@ namespace SeeShellsV3.UI
         private readonly PlotController _histPlotController = new OxyPlot.PlotController();
 
         private readonly ObservableCollection<object> _selected = new ObservableCollection<object>();
+        private List<OxyColor> palette;
 
         public TimeSeriesHistogram()
         {
@@ -67,17 +68,8 @@ namespace SeeShellsV3.UI
             _histPlotModel.MouseDown += _histPlotModel_MouseDown;
             _histPlotModel.MouseMove += _histPlotModel_MouseMove;
 
-            _histPlotModel.DefaultColors = new List<OxyColor>
-            {
-                OxyColor.FromRgb(0x33, 0x22, 0x88),
-                OxyColor.FromRgb(0x11, 0x77, 0x33),
-                OxyColor.FromRgb(0x44, 0xAA, 0x99),
-                OxyColor.FromRgb(0x88, 0xCC, 0xEE),
-                OxyColor.FromRgb(0xDD, 0xCC, 0x77),
-                OxyColor.FromRgb(0xCC, 0x66, 0x77),
-                OxyColor.FromRgb(0xAA, 0x44, 0x99),
-                OxyColor.FromRgb(0x88, 0x22, 0x55)
-            };
+            palette = new List<OxyColor>();
+            histPlotModel_setColors();
 
             _histPlotController.UnbindMouseDown(OxyMouseButton.Right);
             _histPlotController.BindMouseDown(OxyMouseButton.Left, PlotCommands.PanAt);
@@ -87,6 +79,24 @@ namespace SeeShellsV3.UI
 
             ResetHistSeries();
             UpdateAxes();
+        }
+
+        internal void histPlotModel_setColors(int index = 0)
+        {
+            palette = new List<OxyColor>();
+            List<Color> colors = new List<Color>((IEnumerable<Color>)Application.Current.Resources["Palette" + index.ToString()]);
+            foreach (Color color in colors)
+            {
+                palette.Add(
+                    OxyColor.FromRgb(
+                        color.R,
+                        color.G,
+                        color.B
+                        )
+                    );
+            }
+            _histPlotModel.DefaultColors = palette;
+            Update();
         }
 
         private void _histPlotModel_MouseMove(object sender, OxyMouseEventArgs e)

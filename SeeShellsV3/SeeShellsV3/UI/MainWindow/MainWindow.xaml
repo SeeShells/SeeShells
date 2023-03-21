@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SeeShellsV3.UI"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:xcad="https://github.com/Dirkster99/AvalonDock" d:DataContext="{d:DesignInstance Type=local:MainWindowVM}"
                  mc:Ignorable="d"
@@ -32,6 +33,20 @@
                 <SolidColorBrush x:Key="MahApps.Brushes.ToggleSwitch.FillOn" Color="{DynamicResource MahApps.Colors.ThemeBackground}" />
                 <SolidColorBrush x:Key="MahApps.Brushes.ToggleSwitch.FillOnPointerOver" Color="{DynamicResource MahApps.Colors.Gray7}" />
             </mah:WindowCommands.Resources>
+            
+            <mah:SplitButton SelectedIndex="0"
+                             HorizontalAlignment="Right"
+                             SelectionChanged="SplitButton_OnSelectionChanged"
+                             >
+                <mah:SplitButton.ItemsSource>
+                    <x:Array Type="system:String">
+                        <system:String>Tol1</system:String>
+                        <system:String>Tol2</system:String>
+                        <system:String>Pastel</system:String>
+                    </x:Array>
+                </mah:SplitButton.ItemsSource>
+            </mah:SplitButton>
+                             
             <mah:ToggleSwitch OffContent="Light"
                               OnContent="Dark"
                               Toggled="ToggleSwitch_Toggled"
@@ -85,7 +100,7 @@
                     <xcad:LayoutDocumentPaneGroup >
                         <xcad:LayoutDocumentPane>
                             <xcad:LayoutDocument ContentId="timelineview" Title="Events" CanClose="False" ToolTip="A timeline of user activity">
-                                <local:TimelineView />
+                                <local:TimelineView x:Name="Timeline"/>
                             </xcad:LayoutDocument>
                             <xcad:LayoutDocument ContentId="tableview" Title="Shellbags" CanClose="False" ToolTip="A list of shellbags found in the loaded registry hives">
                                 <local:ShellItemTableView />

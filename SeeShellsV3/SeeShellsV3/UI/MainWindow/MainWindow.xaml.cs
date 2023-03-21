@@ -8,6 +8,7 @@ using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using Microsoft.Win32;
+using ControlzEx.Theming;
 
 using MahApps.Metro.Controls;
 using SeeShellsV3.Events;
@@ -19,8 +20,6 @@ namespace SeeShellsV3.UI
 {
     public interface IMainWindowVM : IViewModel
     {
-        //public void ImportFromCSV(string path);
-        //void ExportToCSV(string path);
         bool ImportFromRegistry(string hiveLocation = null);
         void RestartApplication(bool runAsAdmin = false);
         void ChangeTimezone(string timezone);
@@ -46,32 +45,19 @@ namespace SeeShellsV3.UI
         [Dependency]
         public IWindowFactory WindowFactory { private get; set; }
 
+        Uri currTheme;
+
         public MainWindow()
         {
+            currTheme = new Uri(@"UI/Themes/DarkTheme.xaml", UriKind.Relative);
             InitializeComponent();
         }
-
-        //private void Import_CSV_Click(object sender, RoutedEventArgs e)
-        //{
-        //    OpenFileDialog openFileDialog = new OpenFileDialog();
-        //    openFileDialog.Filter = "CSV file (*.csv)|*.csv|All files (*.*)|*.*";
-        //    if (openFileDialog.ShowDialog() == true)
-        //        ViewModel.ImportFromCSV(openFileDialog.FileName);
-        //}
 
         private void Export_Window_Click(object sender, RoutedEventArgs e)
         {
             IWindow win = WindowFactory.Create("export");
             win.Show();
         }
-
-		//private void Export_CSV_Click(object sender, RoutedEventArgs e)
-		//{
-		//	OpenFileDialog openFileDialog = new OpenFileDialog();
-		//	openFileDialog.Filter = "CSV file (*.csv)|*.csv|All files (*.*)|*.*";
-		//	if (openFileDialog.ShowDialog() == true)
-		//		ViewModel.ExportToCSV(openFileDialog.FileName);
-		//}
 
 		private void Import_Live_Registry_Click(object sender, RoutedEventArgs e)
         {
@@ -105,9 +91,17 @@ namespace SeeShellsV3.UI
         private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
         {
             if (sender is ToggleSwitch s && s.IsOn)
-                (Application.Current as App).ChangeTheme(new Uri(@"UI/Themes/DarkTheme.xaml", UriKind.Relative));
+                currTheme = new Uri(@"UI/Themes/DarkTheme.xaml", UriKind.Relative);
             else
-                (Application.Current as App).ChangeTheme(new Uri(@"UI/Themes/LightTheme.xaml", UriKind.Relative));
+                currTheme = new Uri(@"UI/Themes/LightTheme.xaml", UriKind.Relative);
+            (Application.Current as App).ChangeTheme(currTheme);
+        }
+
+        private void SplitButton_OnSelectionChanged(object sender, RoutedEventArgs e)
+        {
+            if (sender is SplitButton splitButton && 
+                Timeline.FindChild<TimeSeriesHistogram>("Histogram") is TimeSeriesHistogram histogram)
+                histogram.histPlotModel_setColors(splitButton.SelectedIndex);
         }
 
         private void ChangeTimezone_Click(object sender, RoutedEventArgs e)
