@@ -62,8 +62,7 @@ export default function HowToUse()
         font-family: "IBM Plex Sans Condensed";
         font-size: 30pt;
         font-weight: bold;
-        margin: 2px;
-    `
+        margin: 2px;    `
 
     const TabTitle = styled.div`
         font-family: "IBM Plex Sans Condensed";
