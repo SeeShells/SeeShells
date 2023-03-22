@@ -168,7 +168,7 @@ namespace SeeShellsV3.UI
             }
         }
 
-        private void OnItemsChange(object sender, NotifyCollectionChangedEventArgs args) => ResetHeatMap();
+        private void OnItemsChange(object sender, NotifyCollectionChangedEventArgs args) => Update();
         private void Clear_MenuItem_Click(object sender, RoutedEventArgs e) => ClearSelected();
         private void OnMouseRightButtonDown(object sender, MouseButtonEventArgs e) => e.Handled = !AllowInteraction;
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e) => ClearSelected();
@@ -198,14 +198,7 @@ namespace SeeShellsV3.UI
             if (!HeatMapPlot.ActualModel.PlotArea.Contains(args.Position))
                 return;
 
-            try
-            {
-                HeatMapPlot.ShowTracker(_heatMapPlotModel.Series.OfType<HeatMapSeries>().FirstOrDefault().GetNearestPoint(args.Position, true));
-            }
-            catch (NullReferenceException)
-            {
-                return; 
-            }
+            HeatMapPlot.ShowTracker(_heatMapPlotModel.Series.OfType<HeatMapSeries>().First().GetNearestPoint(args.Position, true));
 
             if (Orientation == Orientation.Vertical)
             {
