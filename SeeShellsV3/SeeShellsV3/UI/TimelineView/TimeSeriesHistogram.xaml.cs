@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,6 +22,7 @@ using System.Windows.Shapes;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
+using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace SeeShellsV3.UI
 {
@@ -54,6 +55,7 @@ namespace SeeShellsV3.UI
         private readonly PlotController _histPlotController = new OxyPlot.PlotController();
 
         private readonly ObservableCollection<object> _selected = new ObservableCollection<object>();
+        private List<OxyColor> palette;
 
         public TimeSeriesHistogram()
         {
@@ -66,17 +68,8 @@ namespace SeeShellsV3.UI
             _histPlotModel.MouseDown += _histPlotModel_MouseDown;
             _histPlotModel.MouseMove += _histPlotModel_MouseMove;
 
-            _histPlotModel.DefaultColors = new List<OxyColor>
-            {
-                OxyColor.FromRgb(0x33, 0x22, 0x88),
-                OxyColor.FromRgb(0x11, 0x77, 0x33),
-                OxyColor.FromRgb(0x44, 0xAA, 0x99),
-                OxyColor.FromRgb(0x88, 0xCC, 0xEE),
-                OxyColor.FromRgb(0xDD, 0xCC, 0x77),
-                OxyColor.FromRgb(0xCC, 0x66, 0x77),
-                OxyColor.FromRgb(0xAA, 0x44, 0x99),
-                OxyColor.FromRgb(0x88, 0x22, 0x55)
-            };
+            palette = new List<OxyColor>();
+            histPlotModel_setColors();
 
             _histPlotController.UnbindMouseDown(OxyMouseButton.Right);
             _histPlotController.BindMouseDown(OxyMouseButton.Left, PlotCommands.PanAt);
@@ -86,6 +79,24 @@ namespace SeeShellsV3.UI
 
             ResetHistSeries();
             UpdateAxes();
+        }
+
+        internal void histPlotModel_setColors(int index = 0)
+        {
+            palette = new List<OxyColor>();
+            List<Color> colors = new List<Color>((IEnumerable<Color>)Application.Current.Resources["Palette" + index.ToString()]);
+            foreach (Color color in colors)
+            {
+                palette.Add(
+                    OxyColor.FromRgb(
+                        color.R,
+                        color.G,
+                        color.B
+                        )
+                    );
+            }
+            _histPlotModel.DefaultColors = palette;
+            Update();
         }
 
         private void _histPlotModel_MouseMove(object sender, OxyMouseEventArgs e)
@@ -186,7 +197,16 @@ namespace SeeShellsV3.UI
             if (!_histPlotModel.Series.OfType<HistogramSeries>().Where(s => s.IsSelected()).Any())
                 _histPlotModel.Series.OfType<HistogramSeries>().ForEach(s => s.FillColor = OxyColor.FromAColor((byte)255, s.ActualFillColor));
             else
-                _histPlotModel.Series.OfType<HistogramSeries>().ForEach(s => s.FillColor = OxyColor.FromAColor((byte)(s.IsSelected() ? 255 : 32), s.ActualFillColor));
+                _histPlotModel.Series.OfType<HistogramSeries>().ForEach(s =>
+                 {
+                     if (!s.RenderInLegend)
+                     {
+                         s.FillColor = OxyColor.FromAColor((byte)(0), s.ActualFillColor);
+
+                     }
+                     else
+                        s.FillColor = OxyColor.FromAColor((byte)(s.IsSelected() ? 255 : 20), s.ActualFillColor);
+                 });   
         }
 
         protected void UpdateAxes()
@@ -246,13 +266,25 @@ namespace SeeShellsV3.UI
                     .GroupBy(x => x.item.GetDeepPropertyValue(ColorProperty))
                     .OrderByDescending(x => x.Count());
 
+            PriorityQueue<HistogramItem, int> bins = new PriorityQueue<HistogramItem, int>();
+            Dictionary<string, OxyColor> colors = new Dictionary<string, OxyColor>();
+            Dictionary<string, OxyColor> binColors = new Dictionary<string, OxyColor>();
+
+            int count = 0;
+
+     
+
             foreach (var group in groups)
             {
+                OxyColor color = _histPlotModel.DefaultColors[count++ % _histPlotModel.DefaultColors.Count];
+                colors[group.Key?.ToString()] = color;
                 HistogramSeries s = new HistogramSeries();
+
 
                 var dates = group
                 .Select(x => x.date)
                 .OrderBy(x => x);
+
 
                 s.ItemsSource = HistogramHelpers.Collect(
                     dates.Select(x => DateTimeAxis.ToDouble(x)),
@@ -267,12 +299,60 @@ namespace SeeShellsV3.UI
                 s.Title = group.Key?.ToString() ?? string.Empty;
                 s.ToolTip = s.Title;
                 s.Tag = (group.Key, dates.Count());
+                s.FillColor = color;
 
                 if (_selected.Contains(group.Key))
                     s.Select();
 
                 _histPlotModel.Series.Add(s);
             }
+
+            foreach (var group in groups)
+            {
+                var dates = group
+               .Select(x => x.date)
+               .OrderBy(x => x);
+
+                var realBins = HistogramHelpers.Collect(
+                    dates.Select(x => DateTimeAxis.ToDouble(x)),
+                    binBreaks,
+                    options
+                );
+
+                OxyColor color = colors[group.Key?.ToString()];
+
+                foreach (HistogramItem bin in realBins)
+                {
+
+                    if (bin.Count == 0)
+                        continue;
+
+                    bin.Area = bin.Area * dates.Count() / items.Count();
+
+                    binColors[bin.ToString()] = color;
+
+                    bins.Enqueue(bin, -bin.Count);
+
+                }
+
+            }
+
+
+            int size = bins.Count;
+
+
+            for (int i = 0; i < size; i++)
+            {
+                HistogramSeries s = new HistogramSeries();
+                IList newBin = new List<HistogramItem>();
+                HistogramItem curr = bins.Dequeue();
+                newBin.Add(curr);
+                s.ItemsSource = newBin;
+                s.RenderInLegend = false;
+                s.FillColor = binColors[curr.ToString()];
+                _histPlotModel.Series.Add(s);
+            }
+
         }
 
         public static readonly DependencyProperty ItemsSourceProp =

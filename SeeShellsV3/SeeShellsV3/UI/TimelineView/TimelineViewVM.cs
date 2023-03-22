@@ -29,6 +29,8 @@ namespace SeeShellsV3.UI
         public ICollectionView ShellEvents => _shellEventsView.View;
         public ICollectionView FilteredShellEvents => _shellEvents.FilteredView;
 
+        public IShellEventCollection events => _shellEvents;
+
         public string ColorProperty { get => _colorProperty; set { _colorProperty = value; NotifyPropertyChanged(); } }
 
         public DateTime? DateSelectionBegin { get => _selectionBegin; set { _selectionBegin = value; UpdateSelection(); } }
@@ -136,7 +138,9 @@ namespace SeeShellsV3.UI
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             if (values.Length >= 3 && values[0] is object o && values[1] is string prop && values[2] is IEnumerable selected)
+            {
                 return !selected.OfType<object>().Any() || selected.OfType<object>().Contains(o.GetDeepPropertyValue(prop));
+            }
 
             return true;
         }
