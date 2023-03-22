@@ -1,62 +1,106 @@
 import styled from "styled-components";
 import Header from "./Header";
-import logo from "./seeshellsLogo-flipped.png";
-import { MainContent, Title, MainText, Contain } from "./customStyles";
-import { howToInfo } from "./HowToInfoArray";
+import Foldery from "./Foldery.js";
+import TestButton from "./TestButton.js"
+import SideBar from "./SideBar.js"
+import { MainContent, Title,  Contain } from "./customStyles";
+import { useState} from "react";
+import {FaListUl} from "react-icons/fa";
+import {Menu} from '@mui/material';
 
+
+const howToInfo = require("./HowToInfoArray.json")
 const options = require("./HowToUseArray.json")
 
 
 
-export default function HowToUse()
+
+export default function HowToUse({size})
 {
+    let click = false;
+    let button = null;
+
+    let mobile = (size.width <= 750)
+
+    const [finished, setFinished] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(false);
+
+    const options = require("./HowToUseArray.json")
+
+    const optionsScroll = (option) =>
+    {
+
+      
+
+        document.getElementById(option).scrollIntoView({behavior:"smooth", alignToTop:"true"})
+        
+        
+        if (button != null)
+            button.style.fontWeight = ""
+        
+        button = document.getElementById(`${option + "button"}`)
+        button.style.fontWeight = "700"
+
+                        
+    }
+
+    const testCallback =  (option, entries) => {
+        
+        if (!mobile)
+        {
+            if (entries[0].intersectionRatio < 1)
+            {
+                return
+            }
+            if (click)
+                return
+
+            if (button != null)
+                button.style.fontWeight = "";
+            
+            button = document.getElementById(`${option + "button"}`)
+            button.style.fontWeight = "700"
+        }
+        else
+        {
+            if (entries[0].intersectionRatio < 1)
+            {
+                return
+            }
+            if (click)
+                return
+
+            
+        }
+    }
+
     const HeaderContent = styled.div`
+        position: relative;
         background: #2C313D;
+        display: flex;
+        justify-content: center;
     `
 
     const MenuSelectBox = styled.div`
         
         display:flex;
-        align-content: flex-start;
-    `
-    const SideBar = styled.div`
-        flex-direction:column;
-        display:flex;
-        width: 15%;
-        height: 100%;
-        background: #2C313D;
-    `
-    const optionButtons = styled.div`
-        text-align:left;
-        font-size: 15pt;
+        align-content: center;
     `
     const PageInfo = styled.div`
         flex-direction: column;
         display:flex;
-        width: 85%;
-
-        justify-content: center;
+        width: ${mobile ? "100vw" : "80vw"};
+        height: 100%;
+        align-items: center;
         margin: 2%;
-    `
-    const InfoBox = styled.div`
-        flex-direction: column;
-        display:flex;
-        align: center
-        justify-content:center;
-        width: 70%;
-        height: fit-content;
+        margin-bottom: 0;
+        margin-top:0;
+        overflow: auto;
         
     `
-    const InfoTabBox = styled.div`
-        
-        display:flex;
-        align: center;
-        justify-content:center;
-        width: 90%;
-        background: #2C313D;
-        border-radius: 10px;
-        height: fit-content;
-        flex-direction: column;
+
+    const MenuButton = styled.div`
+
     `
     const HowToTitle = styled.div`
         font-family: "IBM Plex Sans Condensed";
@@ -64,91 +108,39 @@ export default function HowToUse()
         font-weight: bold;
         margin: 2px;    `
 
-    const TabTitle = styled.div`
-        font-family: "IBM Plex Sans Condensed";
-        font-size: 20pt;
-        margin: 3%;
-    `
+    const pageContent = () => {
+        if (finished)
+        {
+            return(
+                <PageInfo id={"PageInfo"}>
+                    <Foldery InfoSection={howToInfo.parsing} testCallback={testCallback} currTab={"Online"} size ={size} mobile={mobile}/>
+                        <div style={{marginBottom:"500px"}} />
+                    <Foldery InfoSection={howToInfo.ShellInspector} testCallback={testCallback} currTab={"Online"} size={size} mobile={mobile} />
+                </PageInfo>
+            )
+        }
+    }
+    
+    function openMenu()
+    {
+        setMenuOpen(true);
+    }
 
-    const Definition = styled.div`
-        font-family: "IBM Plex Sans Condensed";
-        font-size: 12pt;
-        margin: 3%;
-    `
-    const ToStatement = styled.div`
-        font-family: "IBM Plex Sans Condensed";
-        font-size: 15pt;
-        font-weight: bold;
-        margin: 3%;
-    `
-    const StepDiv = styled.div`
-        font-family: "IBM Plex Sans Condensed";
-        font-size: 13pt;
-        margin: 3%;
-
-    `
 
     return (
-        <Contain>
-            <Header tab="How to Use" />
-            <HeaderContent>
-                <Title>
-                    How To Use
-                </Title>
-            </HeaderContent>
-            <MainContent>
-                <MenuSelectBox>
-                    <SideBar>
-                        {options.options.map((option) => {
-                            return (
-                                <div style={{ textAlign: "left", fontSize: "15pt", marginLeft: "10%", marginBottom: "15pt"}}>
-                                    {option}
-                                </div>   
-                            )     
-                        })}
-                    </SideBar>
-                    <PageInfo>
-                        {howToInfo.map((InfoSection) => {
-                            return (
-                                <InfoBox>
-                                    <HowToTitle>
-                                        {InfoSection.title}
-                                    </HowToTitle>
-                                    <InfoTabBox>
-                                        {InfoSection.tabs.map((Tab) => {
-                                            return (
-                                                <div>
-                                                    <TabTitle>
-                                                        {Tab.title}
-                                                    </TabTitle>
-                                                    <Definition>
-                                                        {Tab.definition }
-                                                    </Definition>
-                                                    <ToStatement>
-                                                        {Tab.toStatement}
-                                                    </ToStatement>
-                                                    
-                                                    {Tab.steps.map((Step, Index) => {
-                                                        return (
-                                                            <StepDiv>
-                                                                Step {Index + 1}: {Step}
-                                                            </StepDiv>
-                                                            )
-                                                    })}
-                                                    
-                                    
-                                                </div>  
-                                            )
-                                        })}
-                                    </InfoTabBox>
-                                </InfoBox>
-                            )
-                        })}
-
-                    </PageInfo>
-                </MenuSelectBox>
-
-            </MainContent>
-        </Contain>
+            <Contain>
+                <Header tab="How to Use" size={size}/>
+                <HeaderContent>
+                    <Title>
+                        How To Use
+                    </Title>
+                </HeaderContent>
+                <MainContent style={{display:"flex", flexDirection:"row", overflow:"hidden"}}>
+                    <MenuSelectBox>
+                    <SideBar scroll={optionsScroll} update={setFinished} button={button} mobile = {mobile}/>
+                            {pageContent()}
+                    </MenuSelectBox>
+                </MainContent>
+            </Contain>
     );
 }
