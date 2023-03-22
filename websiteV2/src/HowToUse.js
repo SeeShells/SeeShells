@@ -106,7 +106,8 @@ export default function HowToUse({size})
         font-family: "IBM Plex Sans Condensed";
         font-size: 30pt;
         font-weight: bold;
-        margin: 2px;    `
+        margin: 2px;
+    `
 
     const pageContent = () => {
         if (finished)
