@@ -1,0 +1,62 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <LangVersion>11.0</LangVersion>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows10.0.22621.0</TargetFramework>
+	<PublishSingleFile>true</PublishSingleFile>
+	<SelfContained>true</SelfContained>
+	<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <UseWPF>true</UseWPF>
+    <StartupObject>SeeShellsV3.Program</StartupObject>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>SeeShells.ico</ApplicationIcon>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Services\PdfExporter\Modules\ShellEventModule\**" />
+    <EmbeddedResource Remove="Services\PdfExporter\Modules\ShellEventModule\**" />
+    <None Remove="Services\PdfExporter\Modules\ShellEventModule\**" />
+    <Page Remove="Services\PdfExporter\Modules\ShellEventModule\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\User\.nuget\packages\wpfhexaeditor\2.1.6\contentFiles\any\net5.0-windows7.0\Resources\EBCDIC-NoSpecialChar.tbl" />
+    <Content Remove="C:\Users\User\.nuget\packages\wpfhexaeditor\2.1.6\contentFiles\any\net5.0-windows7.0\Resources\EBCDIC.tbl" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Config.json" />
+    <None Remove="UI\Images\beach2.png" />
+    <None Remove="UI\Images\SeeShells.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="21.1.1" />
+    <PackageReference Include="Dirkster.AvalonDock" Version="4.50.2" />
+    <PackageReference Include="Dirkster.AvalonDock.Themes.VS2013" Version="4.50.2" />
+    <PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="4.6.96" />
+    <PackageReference Include="MahApps.Metro" Version="2.4.9" />
+    <PackageReference Include="MahApps.Metro.IconPacks" Version="4.8.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="OxyPlot.Wpf" Version="2.0.0" />
+    <PackageReference Include="Unity" Version="5.11.9" />
+	<PackageReference Include="WPFHexaEditor" Version="2.1.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Registry\Registry.csproj" />
+    <EmbeddedResource Include="Config.json" />
+    <Resource Include="UI\Images\beach2.png" />
+    <Resource Include="UI\Images\SeeShells.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Repositories\ReportEventCollection\" />
+    <Folder Include="Events\" />
+    <Folder Include="Services\TimezoneManager\" />
+  </ItemGroup>
+
+</Project>
