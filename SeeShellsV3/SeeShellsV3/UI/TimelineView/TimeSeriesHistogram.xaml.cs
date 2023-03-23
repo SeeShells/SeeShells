@@ -133,28 +133,33 @@ namespace SeeShellsV3.UI
 
             if (_histLegend.LegendArea.Contains(e.Position))
             {
-                int index = (int)((e.Position.Y - _histLegend.LegendArea.Top - _histLegend.LegendPadding) / (_histLegend.LegendSymbolLength));
 
-                try
+                if (_histPlotModel.Series.OfType<HistogramSeries>().Where(s => s.IsVisible == false).Any())
                 {
-                    var hst = _histPlotModel.Series.OfType<HistogramSeries>().Where(s => s.RenderInLegend).ElementAt(index);
+                    int count = _histPlotModel.Series.OfType<HistogramSeries>().Where(s => s.IsVisible == false).Count();
+                    HistogramSeries[] series = new HistogramSeries[count];
 
-                    if (hst.IsSelected())
+                    for ( int i = 0; i < count; i++)
                     {
-                        hst.Unselect();
-                        _selected.Remove((hst.Tag as (object, int)?)?.Item1);
+                        series[i] = _histPlotModel.Series.OfType<HistogramSeries>().Where(s => s.IsVisible == false).Distinct().ElementAt(i);
                     }
-                    else
+
+                    for ( int i = 0; i < series.Length; i++)
                     {
-                        hst.Select();
-                        _selected.Add((hst.Tag as (object, int)?)?.Item1);
+                        if (series[i].IsSelected())
+                        {
+                            series[i].Unselect();
+                            _selected.Remove((series[i].Tag as (object, int)?)?.Item1);
+                            series[i].IsVisible = true;
+                        }
+                        else
+                        {
+                            series[i].Select();
+                            _selected.Add((series[i].Tag as (object, int)?)?.Item1);
+                            series[i].IsVisible = true; 
+                        }
                     }
                 }
-                catch (ArgumentOutOfRangeException)
-                {
-                    return;
-                }
-
                 UpdateColors();
                 HistogramPlot.InvalidatePlot();
             }
@@ -276,10 +281,11 @@ namespace SeeShellsV3.UI
             PriorityQueue<HistogramItem, int> bins = new PriorityQueue<HistogramItem, int>();
             Dictionary<string, OxyColor> colors = new Dictionary<string, OxyColor>();
             Dictionary<string, OxyColor> binColors = new Dictionary<string, OxyColor>();
+            Dictionary<string, string> titles = new Dictionary<string, string>();
+            Dictionary<string, string> binTitles = new Dictionary<string, string>();
+
 
             int count = 0;
-
-     
 
             foreach (var group in groups)
             {
@@ -287,11 +293,9 @@ namespace SeeShellsV3.UI
                 colors[group.Key?.ToString()] = color;
                 HistogramSeries s = new HistogramSeries();
 
-
                 var dates = group
                 .Select(x => x.date)
                 .OrderBy(x => x);
-
 
                 s.ItemsSource = HistogramHelpers.Collect(
                     dates.Select(x => DateTimeAxis.ToDouble(x)),
@@ -307,6 +311,8 @@ namespace SeeShellsV3.UI
                 s.ToolTip = s.Title;
                 s.Tag = (group.Key, dates.Count());
                 s.FillColor = color;
+
+                titles[group.Key?.ToString()] = s.Title;
 
                 if (_selected.Contains(group.Key))
                     s.Select();
@@ -327,6 +333,7 @@ namespace SeeShellsV3.UI
                 );
 
                 OxyColor color = colors[group.Key?.ToString()];
+                string title = titles[group.Key?.ToString()];
 
                 foreach (HistogramItem bin in realBins)
                 {
@@ -337,6 +344,7 @@ namespace SeeShellsV3.UI
                     bin.Area = bin.Area * dates.Count() / items.Count();
 
                     binColors[bin.ToString()] = color;
+                    binTitles[bin.ToString()] = title;
 
                     bins.Enqueue(bin, -bin.Count);
 
@@ -344,9 +352,7 @@ namespace SeeShellsV3.UI
 
             }
 
-
             int size = bins.Count;
-
 
             for (int i = 0; i < size; i++)
             {
@@ -355,11 +361,11 @@ namespace SeeShellsV3.UI
                 HistogramItem curr = bins.Dequeue();
                 newBin.Add(curr);
                 s.ItemsSource = newBin;
-                s.RenderInLegend = false;
+                s.Title = binTitles[curr.ToString()];
                 s.FillColor = binColors[curr.ToString()];
+                s.RenderInLegend = false;
                 _histPlotModel.Series.Add(s);
             }
-
         }
 
         public static readonly DependencyProperty ItemsSourceProp =

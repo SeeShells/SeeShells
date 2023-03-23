@@ -400,7 +400,7 @@ namespace SeeShellsV3.UI
 
             _dayCategoryAxis.ItemsSource = (Orientation == Orientation.Horizontal) ?
                 weekdays.Reverse() : weekdays;
-
+            
             _linearAxis.TitleColor = TextColor.ToOxyColor();
             _linearAxis.TextColor = TextColor.ToOxyColor();
             _linearAxis.TicklineColor = OxyColors.Transparent;
