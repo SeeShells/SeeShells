@@ -26,6 +26,7 @@ namespace SeeShellsV3.UI
         void RestartApplication(bool runAsAdmin = false);
         void ExportToCSV(string filePath, string source);
         void AddToReportCollection();
+        void ChangePalette(string palette);
         void ChangeTimezone(string timezone);
         string WebsiteUrl { get; }
         string GithubUrl { get; }
@@ -115,11 +116,9 @@ namespace SeeShellsV3.UI
             (Application.Current as App).ChangeTheme(currTheme);
         }
 
-        private void SplitButton_OnSelectionChanged(object sender, RoutedEventArgs e)
+        private void ChangePalette_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is SplitButton splitButton && 
-                Timeline.FindChild<TimeSeriesHistogram>("Histogram") is TimeSeriesHistogram histogram)
-                histogram.histPlotModel_setColors(splitButton.SelectedIndex);
+            ViewModel.ChangePalette((sender as MenuItem).Header as string);
         }
 
         private void ChangeTimezone_Click(object sender, RoutedEventArgs e)

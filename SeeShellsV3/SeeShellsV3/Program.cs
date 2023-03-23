@@ -53,6 +53,7 @@ namespace SeeShellsV3
             container.RegisterType<IRegistryImporter, RegistryImporter>();
             container.RegisterType<IShellEventManager, ShellEventManager>();
             container.RegisterType<ITimezoneManager, TimezoneManager>();
+            container.RegisterSingleton<IPaletteManager, PaletteManager>();
 
             // Register Window Types
             container.RegisterType<IWindow, MainWindow>("main");
