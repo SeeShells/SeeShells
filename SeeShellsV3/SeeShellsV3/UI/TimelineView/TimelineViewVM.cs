@@ -46,6 +46,16 @@ namespace SeeShellsV3.UI
         private IShellEventCollection _shellEvents;
         private readonly CollectionViewSource _shellEventsView = new CollectionViewSource();
 
+        [Dependency] public IReportEventCollection ReportEvents { get; set; }
+
+        private static readonly Dictionary<string, string> _reportStatus = new()
+        {
+            {"add", "Add Selected to Report" },
+            {"remove", "Remove Selected from Report"}
+        };
+
+        public string ReportStatus { get; set; } = _reportStatus["add"];
+
         public TimelineViewVM([Dependency] ISelected selected, [Dependency] IShellEventCollection shellEvents)
         {
             Selected = selected;
@@ -87,6 +97,23 @@ namespace SeeShellsV3.UI
         {
             return DateSelectionBegin == null || DateSelectionEnd == null ||
             (o is IShellEvent se && se.TimeStamp >= DateSelectionBegin && se.TimeStamp <= DateSelectionEnd);
+        }
+
+        public void UpdateReportStatus()
+        {
+            bool isInCollection = ReportEvents.Contains(Selected.CurrentInspector as IShellEvent);
+            ReportStatus = isInCollection ? _reportStatus["remove"] : _reportStatus["add"];
+
+            NotifyPropertyChanged(nameof(ReportStatus));
+        }
+
+        public void ManageCollection()
+        {
+            // If for whatever reason, the shell event can't be added nor removed from the report selection, then something is wrong.
+            if (!ReportEvents.Decide(Selected.CurrentInspector as IShellEvent))
+            {
+                throw new InvalidOperationException();
+            }
         }
     }
 
