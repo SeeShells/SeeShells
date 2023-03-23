@@ -25,6 +25,7 @@ namespace SeeShellsV3.UI
         [Dependency] public IShellEventManager ShellEventManager { get; set; }
         [Dependency] public IShellEventCollection ShellEvents { get; set; }
         [Dependency] public ITimezoneManager TimezoneManager { get; set; }
+        [Dependency] public IPaletteManager PaletteManager { get; set; }
         [Dependency] public ISelected Selected { get; set; }
         [Dependency] public IReportEventCollection ReportEvents { get; set; }
 
@@ -134,6 +135,13 @@ namespace SeeShellsV3.UI
             IShellEvent shell = Selected.CurrentInspector as IShellEvent;
             ReportEvents.Add(shell);
         }
+
+        public void ChangePalette(string palette)
+        {
+            PaletteManager.PaletteChangeHandler(palette);
+            NotifyPropertyChanged(nameof(PaletteManager));
+        }
+
         public void ChangeTimezone(string timezone)
         {
             Debug.WriteLine("ChangeTime");

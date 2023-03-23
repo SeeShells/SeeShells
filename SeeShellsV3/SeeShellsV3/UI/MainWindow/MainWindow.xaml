@@ -37,20 +37,17 @@
                 <SolidColorBrush x:Key="MahApps.Brushes.ToggleSwitch.FillOn" Color="{DynamicResource MahApps.Colors.ThemeBackground}" />
                 <SolidColorBrush x:Key="MahApps.Brushes.ToggleSwitch.FillOnPointerOver" Color="{DynamicResource MahApps.Colors.Gray7}" />
             </mah:WindowCommands.Resources>
-            
-            <mah:SplitButton SelectedIndex="0"
-                             HorizontalAlignment="Right"
-                             SelectionChanged="SplitButton_OnSelectionChanged"
-                             >
-                <mah:SplitButton.ItemsSource>
-                    <x:Array Type="system:String">
-                        <system:String>Tol1</system:String>
-                        <system:String>Tol2</system:String>
-                        <system:String>Pastel</system:String>
-                    </x:Array>
-                </mah:SplitButton.ItemsSource>
-            </mah:SplitButton>
-                             
+
+            <Menu Background="Transparent">
+                <MenuItem  Header="{Binding PaletteManager.CurrentPalette.Name}" Background="Transparent" ItemsSource="{Binding PaletteManager.PaletteNames}">
+                    <MenuItem.ItemTemplate>
+                        <DataTemplate>
+                            <MenuItem Header="{Binding}" Background="Transparent" Click="ChangePalette_Click"/>
+                        </DataTemplate>
+                    </MenuItem.ItemTemplate>
+                </MenuItem>
+            </Menu>
+
             <mah:ToggleSwitch OffContent="Light"
                               OnContent="Dark"
                               Toggled="ToggleSwitch_Toggled"
@@ -59,6 +56,7 @@
                               HorizontalContentAlignment="Right"
                               ContentDirection="LeftToRight"
                               Margin="5 0"/>
+            
             <Menu Background="Transparent">
                 <MenuItem Header="{Binding TimezoneManager.CurrentTimezone.Identifier}" Background="Transparent" ItemsSource="{Binding TimezoneManager.SupportedTimezones}" Width="39">
                     <MenuItem.ItemTemplate>

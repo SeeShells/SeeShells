@@ -58,6 +58,7 @@
     <Folder Include="Repositories\ReportEventCollection\" />
     <Folder Include="Events\" />
     <Folder Include="Services\TimezoneManager\" />
+    <Folder Include="Services\PaletteManager\" />
   </ItemGroup>
 
 </Project>
