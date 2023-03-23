@@ -97,13 +97,15 @@ namespace SeeShellsV3.Services
 
             // Update ShellEvent collection so that the timeline gets updated
             CollectionViewSource viewSource = new CollectionViewSource();
-            ShellEvent temp = (ShellEvent)Selected.CurrentInspector;
-            foreach (ShellItem i in temp.Evidence)
+            if (Selected.CurrentInspector is ShellEvent temp) // Ensure Selected.CurrentInspector is correct type
             {
-                viewSource.Source = i.ActualFields;
-                ICollectionView view = viewSource.View;
+                foreach (ShellItem i in temp.Evidence)
+                {
+                    viewSource.Source = i.ActualFields;
+                    ICollectionView view = viewSource.View;
 
-                view.Refresh();
+                    view.Refresh();
+                }
             }
 
             Selected.CurrentInspector = null;
