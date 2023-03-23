@@ -98,6 +98,22 @@ export default function HowToUse({size})
         overflow: auto;
         
     `
+    const InfoTabBox = styled.div`
+        
+        display:flex;
+        align: center;
+        justify-content:center;
+        width: 90%;
+        background: #2C313D;
+        border-radius: 10px;
+        height: fit-content;
+        flex-direction: column;
+    `
+    const HowToTitle = styled.div`
+        font-family: "IBM Plex Sans Condensed";
+        font-size: 30pt;
+        font-weight: bold;
+        margin: 2px;    `
 
     const MenuButton = styled.div`
 
