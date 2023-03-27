@@ -12,17 +12,8 @@ namespace SeeShellsV3.Data
         /// </example>
         string Name { get; init; }
 
-        /// <summary>
-        /// The name of the new timezone in standard format.
-        /// </summary>
-        /// <example>
-        /// Eastern time would be formatted as "Eastern Standard Time".
-        /// </example>
-        string Identifier { get; init; }
+        UtcOffset Offset { get; init; }
 
-        /// <summary>
-        /// A TimeZoneInfo object that represents the timezone.
-        /// </summary>
-        TimeZoneInfo Information { get; init; }
+        string ToString();
     }
 }

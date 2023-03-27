@@ -15,7 +15,7 @@ namespace SeeShellsV3.Services
 {
     public class TimezoneManager: ITimezoneManager
     {
-        public Timezone CurrentTimezone { get; set; } = new Timezone("Coordinated Universal Time", "UTC");
+        public Timezone CurrentTimezone { get; set; } = new Timezone("Coordinated Universal Time", 0d);
 
         public Collection<Timezone> SupportedTimezones { get; init; } = new Collection<Timezone>();
 
@@ -39,11 +39,11 @@ namespace SeeShellsV3.Services
 
 
             // Populates SupportedTimezones with all the timezones currently available in SeeShells
-            SupportedTimezones.Add(new Timezone("Coordinated Universal Time", "UTC"));
-            SupportedTimezones.Add(new Timezone("Eastern Standard Time", "EST"));
-            SupportedTimezones.Add(new Timezone("Central Standard Time", "CST"));
-            SupportedTimezones.Add(new Timezone("Mountain Standard Time", "MST"));
-            SupportedTimezones.Add(new Timezone("Pacific Standard Time", "PST"));
+            SupportedTimezones.Add(new Timezone("Coordinated Universal Time", 0d));
+            SupportedTimezones.Add(new Timezone("Eastern Standard Time", -5d));
+            SupportedTimezones.Add(new Timezone("Central Standard Time", -6d));
+            SupportedTimezones.Add(new Timezone("Mountain Standard Time", -7d));
+            SupportedTimezones.Add(new Timezone("Pacific Standard Time", -8d));
         }
 
 
@@ -95,18 +95,6 @@ namespace SeeShellsV3.Services
                 shellEvent.TimeStamp = ConvertTimezone(shellEvent.TimeStamp, oldTimezone);
             }
 
-            // Update ShellEvent collection so that the timeline gets updated
-            CollectionViewSource viewSource = new CollectionViewSource();
-            if (Selected.CurrentInspector is ShellEvent temp) // Ensure Selected.CurrentInspector is correct type
-            {
-                foreach (ShellItem i in temp.Evidence)
-                {
-                    viewSource.Source = i.ActualFields;
-                    ICollectionView view = viewSource.View;
-
-                    view.Refresh();
-                }
-            }
 
             Selected.CurrentInspector = null;
             Selected.CurrentData = null;
@@ -126,24 +114,16 @@ namespace SeeShellsV3.Services
         /// <returns>A DateTime object representing the same time <see cref="input"/> does, in the timezone of <see cref="CurrentTimezone"/></returns>
         private DateTime ConvertTimezone(DateTime dateTime, Timezone oldTimezone)
         {
-            if (CurrentTimezone.Identifier == "UTC")
+            if(oldTimezone  == null || oldTimezone.Offset == null)
+                throw new TimezoneNotSupportedException();
+
+            if (IsValidDate(dateTime))
             {
-                return TimeZoneInfo.ConvertTimeToUtc(dateTime, oldTimezone.Information);
-            }
-            if (dateTime.Kind == DateTimeKind.Utc)
-            {
-                return TimeZoneInfo.ConvertTimeFromUtc(dateTime, CurrentTimezone.Information);
-            }
-            if (dateTime.Kind == DateTimeKind.Unspecified)
-            {
-                return TimeZoneInfo.ConvertTime(dateTime, oldTimezone.Information, CurrentTimezone.Information);
-            }
-            if (dateTime.Kind == DateTimeKind.Local)
-            {
-                return TimeZoneInfo.ConvertTime(dateTime, TimeZoneInfo.Local, CurrentTimezone.Information);
+                dateTime = dateTime.Add(oldTimezone.Offset.Inverse);
+                dateTime = dateTime.Add(CurrentTimezone.Offset.Offset);
             }
 
-            throw new TimezoneNotSupportedException();
+            return dateTime;
         }
 
         private DateTime? ConvertTimezone(DateTime? input, Timezone oldTimezone)
@@ -155,35 +135,25 @@ namespace SeeShellsV3.Services
 
             DateTime dateTime = Convert.ToDateTime(input);
 
-            if (CurrentTimezone.Identifier == "UTC")
+            return ConvertTimezone(dateTime, oldTimezone);
+        }
+
+        public Timezone GetTimezone(string input)
+        {
+            foreach (Timezone timezone in SupportedTimezones)
             {
-                return TimeZoneInfo.ConvertTimeToUtc(dateTime, oldTimezone.Information);
-            }
-            if (dateTime.Kind == DateTimeKind.Utc)
-            {
-                return TimeZoneInfo.ConvertTimeFromUtc(dateTime, CurrentTimezone.Information);
-            }
-            if (dateTime.Kind == DateTimeKind.Unspecified)
-            {
-                return TimeZoneInfo.ConvertTime(dateTime, oldTimezone.Information, CurrentTimezone.Information);
-            }
-            if (dateTime.Kind == DateTimeKind.Local)
-            {
-                return TimeZoneInfo.ConvertTime(dateTime, TimeZoneInfo.Local, CurrentTimezone.Information);
+                if (timezone.ToString() == input)
+                    return timezone;
             }
 
             throw new TimezoneNotSupportedException();
         }
 
-        public Timezone GetTimezone(string input)
+        private bool IsValidDate(DateTime dateTime)
         {
-            foreach (var timezone in SupportedTimezones)
-            {
-                if (timezone.Identify(input))
-                    return timezone;
-            }
-
-            throw new TimezoneNotSupportedException();
+            if (dateTime.Year == 1)
+                return false;
+            return true;
         }
     }
 

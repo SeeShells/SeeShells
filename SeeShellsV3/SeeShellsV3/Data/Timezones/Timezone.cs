@@ -5,29 +5,17 @@ namespace SeeShellsV3.Data
     public class Timezone : ITimezone
     {
         public string Name { get; init; }
+        public UtcOffset Offset { get; init; }
 
-        public string Identifier { get; init; }
-
-        public TimeZoneInfo Information { get; init; }
-
-        public Timezone(string name, string identifier)
+        public Timezone(string name, double offset)
         {
             Name = name;
-            Identifier = identifier;
-
-            Information = TimeZoneInfo.FindSystemTimeZoneById(name == "Coordinated Universal Time" ? "UTC" : name);
+            Offset = new UtcOffset(offset);
         }
 
-        public bool Identify(string input)
+        public override string ToString()
         {
-            return input == Name || input == Identifier;
+            return Name;
         }
-
-        public bool Identify(TimeZoneInfo input)
-        {
-            return input.Equals(Information);
-        }
-
-
     }
 }
